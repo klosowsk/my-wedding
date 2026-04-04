@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ============================================================
+   FONT FACES — Self-hosted from public/fonts/
+   ============================================================ */
+
+/* Great Vibes — decorative headings only (couple names, section titles) */
+@font-face {
+  font-family: "Great Vibes";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/fonts/great-vibes-latin-ext.woff2") format("woff2"),
+    url("/fonts/great-vibes-latin.woff2") format("woff2");
+}
+
+/* Raleway — body text, clean modern sans-serif */
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src:
+    url("/fonts/raleway-latin-ext.woff2") format("woff2"),
+    url("/fonts/raleway-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Raleway";
+  font-style: italic;
+  font-weight: 300 400;
+  font-display: swap;
+  src:
+    url("/fonts/raleway-italic-latin-ext.woff2") format("woff2"),
+    url("/fonts/raleway-italic-latin.woff2") format("woff2");
+}
+
+/* ============================================================
+   CSS CUSTOM PROPERTIES — Design tokens from marriage.config.ts
+   Full token map per docs/UI_RULES.md
+   ============================================================ */
+
+:root {
+  /* === Primary (Terracotta) === */
+  --color-primary: #B46942;
+  --color-primary-hover: #9D5B39;
+  --color-primary-active: #8A4F31;
+  --color-primary-light: #C88A6A;
+  --color-primary-faint: #F0DDD2;
+
+  /* === Script (Navy Blue — for calligraphy headings) === */
+  --color-script: #1B3A6B;
+
+  /* === Secondary (Sand) === */
+  --color-secondary: #D3BFA6;
+  --color-secondary-light: #E2D5C3;
+  --color-secondary-dark: #BCA88E;
+
+  /* === Accent (Olive) === */
+  --color-accent: #6F714A;
+  --color-accent-light: #8A8C66;
+  --color-accent-faint: #E8E9D8;
+
+  /* === Neutral (Warm Gray) === */
+  --color-muted: #9A9287;
+  --color-muted-light: #B5AFA7;
+  --color-muted-dark: #7A746B;
+
+  /* === Surfaces === */
+  --color-surface: #ECE9D8;
+  --color-surface-hover: #E4E0CE;
+  --color-background: #F7F4EE;
+  --color-warm-white: #FFFDF9;
+
+  /* === Text === */
+  --color-text: #3C3530;
+  --color-text-heading: #2E2925;
+  --color-text-muted: #9A9287;
+  --color-text-light: #B5AFA7;
+  --color-text-on-primary: #FFFDF9;
+
+  /* === Borders === */
+  --color-border: #D3BFA6;
+  --color-border-light: #ECE9D8;
+  --color-border-focus: #B46942;
+
+  /* === Semantic === */
+  --color-success: #6F714A;
+  --color-success-bg: #E8E9D8;
+  --color-error: #C44536;
+  --color-error-bg: #F5E0DD;
+  --color-warning: #D4A843;
+  --color-warning-bg: #F5EDD5;
+  --color-info: #7A8BA8;
+  --color-info-bg: #E8EDF2;
+
+  /* === Fonts === */
+  --font-script: "Great Vibes", cursive;
+  --font-body: "Raleway", sans-serif;
+
+  /* === Radius === */
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* === Max widths === */
+  --max-width-content: 768px;
+  --max-width-wide: 1024px;
+  --max-width-full: 1280px;
+}
+
+/* ============================================================
+   TAILWIND THEME — Map CSS properties to Tailwind utilities
+   ============================================================ */
+
+@theme {
+  /* Colors */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-active: var(--color-primary-active);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-faint: var(--color-primary-faint);
+
+  --color-script: var(--color-script);
+
+  --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
+  --color-secondary-dark: var(--color-secondary-dark);
+
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+  --color-accent-faint: var(--color-accent-faint);
+
+  --color-muted: var(--color-muted);
+  --color-muted-light: var(--color-muted-light);
+  --color-muted-dark: var(--color-muted-dark);
+
+  --color-surface: var(--color-surface);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-background: var(--color-background);
+  --color-warm-white: var(--color-warm-white);
+
+  --color-body: var(--color-text);
+  --color-heading: var(--color-text-heading);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-light: var(--color-text-light);
+  --color-text-on-primary: var(--color-text-on-primary);
+
+  --color-border: var(--color-border);
+  --color-border-light: var(--color-border-light);
+  --color-border-focus: var(--color-border-focus);
+
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-error: var(--color-error);
+  --color-error-bg: var(--color-error-bg);
+  --color-warning: var(--color-warning);
+  --color-warning-bg: var(--color-warning-bg);
+  --color-info: var(--color-info);
+  --color-info-bg: var(--color-info-bg);
+
+  /* Font families */
+  --font-script: var(--font-script);
+  --font-body: var(--font-body);
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
+html {
+  background-color: var(--color-warm-white);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-heading);
+  font-weight: 500;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  transition: color 200ms ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+/* ============================================================
+   DECORATIVE UTILITIES
+   ============================================================ */
+
+/* Gold geometric corner frame (matching physical invite) */
+.corner-frame {
+  position: relative;
+}
+
+.corner-frame::before,
+.corner-frame::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-color: var(--color-secondary);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.corner-frame::before {
+  top: -8px;
+  left: -8px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.corner-frame::after {
+  bottom: -8px;
+  right: -8px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+@media (max-width: 768px) {
+  .corner-frame::before,
+  .corner-frame::after {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Decorative element base */
+.decoration {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.25;
+  position: absolute;
+  z-index: 0;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tick {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes gentle-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(1deg); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 600ms ease-out forwards;
+}
+
+.animate-tick {
+  animation: tick 300ms ease;
+}
+
+.animate-sway {
+  animation: gentle-sway 8s ease-in-out infinite;
+}

@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Home",
+    "gifts": "Gifts",
+    "gallery": "Gallery",
+    "info": "Info",
+    "rsvp": "RSVP"
+  },
+  "hero": {
+    "subtitle": "invite you to celebrate, with love, the beginning of their story as one",
+    "date": "Event date",
+    "venue": "Wedding Venue",
+    "cta": "RSVP"
+  },
+  "countdown": {
+    "title": "Countdown",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
+  },
+  "venue": {
+    "title": "Venue",
+    "address": "Event address",
+    "directions": "Google Maps",
+    "waze": "Waze"
+  },
+  "rsvp": {
+    "title": "RSVP",
+    "greeting": "Hello, {name}!",
+    "question": "Who will be attending?",
+    "attending": "Will attend",
+    "notAttending": "Will not attend",
+    "dietaryNotes": "Dietary restrictions",
+    "message": "Message for the couple",
+    "messagePlaceholder": "Leave a special message...",
+    "submit": "Confirm Attendance",
+    "confirmed": "Attendance confirmed!",
+    "confirmedMessage": "Thank you for confirming. We look forward to celebrating with you!",
+    "declined": "We will miss you!",
+    "declinedMessage": "Thank you for letting us know. We will miss you on this special day.",
+    "deadline": "Please confirm by {date}",
+    "closed": "The RSVP deadline has passed.",
+    "invalidToken": "Invalid invitation link.",
+    "noToken": "Use the link from your invitation or enter your code below.",
+    "enterCode": "Invitation code",
+    "codePlaceholder": "E.g.: SMITH2026",
+    "codeSubmit": "Find Invitation",
+    "backHome": "Back to Home",
+    "viewGifts": "View Gift Registry",
+    "adult": "adult",
+    "child": "child",
+    "infant": "infant"
+  },
+  "gifts": {
+    "title": "Gift Registry",
+    "subtitle": "Your presence is our greatest gift, but if you wish to give us something, here are some suggestions.",
+    "contribute": "Gift",
+    "funded": "Fully funded!",
+    "remaining": "{amount} remaining",
+    "anyAmount": "Any amount",
+    "allCategories": "All",
+    "progress": "__PERCENT__% funded",
+    "collected": "Collected: {amount}",
+    "goal": "Goal: {amount}",
+    "quoteUnit": "Quote value"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Special moments we share.",
+    "lightbox": {
+      "close": "Close",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "resetZoom": "Reset zoom"
+    }
+  },
+  "payment": {
+    "title": "Give a Gift",
+    "pix": "PIX",
+    "stripe": "Credit Card",
+    "amount": "Amount",
+    "yourName": "Your name",
+    "transferred": "I already transferred",
+    "pendingMessage": "Your contribution has been recorded! Thank you for your generosity.",
+    "processing": "Processing...",
+    "qrCode": "Scan the QR Code or copy the PIX code",
+    "copyCode": "Copy PIX Code",
+    "copied": "Copied!",
+    "quoteHint": "Choose how many quotes you want to gift",
+    "quoteUnit": "Quote",
+    "quoteQuantity": "Quantity",
+    "quoteTotal": "Total"
+  },
+  "info": {
+    "title": "Information"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Have any questions? Get in touch with us."
+  },
+  "footer": {
+    "madeWith": "Made with love",
+    "by": "by us"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Try again?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "back": "Back",
+    "confirm": "Confirm",
+    "search": "Search"
+  }
+}

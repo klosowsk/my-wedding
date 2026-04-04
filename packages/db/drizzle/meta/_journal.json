@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1775167471731,
+      "tag": "0000_regular_grim_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775254140235,
+      "tag": "0001_sparkling_iceman",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775308541238,
+      "tag": "0002_add-media-table",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1775319600000,
+      "tag": "0003_gift-public-settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1775319900000,
+      "tag": "0004_gift-funded-badge-toggle",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1775320500000,
+      "tag": "0005_gift-quotes-mode",
+      "breakpoints": true
+    }
+  ]
+}

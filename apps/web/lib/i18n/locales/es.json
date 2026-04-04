@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "gifts": "Regalos",
+    "gallery": "Galería",
+    "info": "Información",
+    "rsvp": "Confirmar Asistencia"
+  },
+  "hero": {
+    "subtitle": "los invitan a celebrar, con amor, el inicio de su historia como uno solo",
+    "date": "Fecha del evento",
+    "venue": "Lugar del evento",
+    "cta": "Confirmar Asistencia"
+  },
+  "countdown": {
+    "title": "Cuenta Regresiva",
+    "days": "días",
+    "hours": "horas",
+    "minutes": "minutos",
+    "seconds": "segundos"
+  },
+  "venue": {
+    "title": "Lugar",
+    "address": "Dirección del evento",
+    "directions": "Google Maps",
+    "waze": "Waze"
+  },
+  "rsvp": {
+    "title": "Confirmar Asistencia",
+    "greeting": "¡Hola, {name}!",
+    "question": "¿Quién asistirá?",
+    "attending": "Asistirá",
+    "notAttending": "No asistirá",
+    "dietaryNotes": "Restricciones alimentarias",
+    "message": "Mensaje para la pareja",
+    "messagePlaceholder": "Deja un mensaje especial...",
+    "submit": "Confirmar Asistencia",
+    "confirmed": "¡Asistencia confirmada!",
+    "confirmedMessage": "Gracias por confirmar. ¡Estamos ansiosos por celebrar contigo!",
+    "declined": "¡Te extrañaremos!",
+    "declinedMessage": "Gracias por avisarnos. Te extrañaremos en este día especial.",
+    "deadline": "Confirma antes del {date}",
+    "closed": "El plazo para confirmar ha terminado.",
+    "invalidToken": "Enlace de invitación inválido.",
+    "noToken": "Usa el enlace de tu invitación o ingresa tu código abajo.",
+    "enterCode": "Código de invitación",
+    "codePlaceholder": "Ej: GARCIA2026",
+    "codeSubmit": "Buscar Invitación",
+    "backHome": "Volver al Inicio",
+    "viewGifts": "Ver Lista de Regalos",
+    "adult": "adulto",
+    "child": "niño",
+    "infant": "bebé"
+  },
+  "gifts": {
+    "title": "Lista de Regalos",
+    "subtitle": "Tu presencia es nuestro mayor regalo, pero si deseas obsequiarnos algo, aquí tienes algunas sugerencias.",
+    "contribute": "Regalar",
+    "funded": "¡Regalo financiado!",
+    "remaining": "Faltan {amount}",
+    "anyAmount": "Cualquier monto",
+    "allCategories": "Todos",
+    "progress": "__PERCENT__% financiado",
+    "collected": "Recaudado: {amount}",
+    "goal": "Meta: {amount}",
+    "quoteUnit": "Valor de cuota"
+  },
+  "gallery": {
+    "title": "Galería",
+    "subtitle": "Momentos especiales que compartimos.",
+    "lightbox": {
+      "close": "Cerrar",
+      "previous": "Foto anterior",
+      "next": "Foto siguiente",
+      "zoomIn": "Acercar",
+      "zoomOut": "Alejar",
+      "resetZoom": "Restablecer zoom"
+    }
+  },
+  "payment": {
+    "title": "Regalar",
+    "pix": "PIX",
+    "stripe": "Tarjeta de Crédito",
+    "amount": "Monto",
+    "yourName": "Tu nombre",
+    "transferred": "Ya transferí",
+    "pendingMessage": "¡Tu contribución fue registrada! Gracias por tu generosidad.",
+    "processing": "Procesando...",
+    "qrCode": "Escanea el código QR o copia el código PIX",
+    "copyCode": "Copiar Código PIX",
+    "copied": "¡Copiado!",
+    "quoteHint": "Elige cuántas cuotas quieres regalar",
+    "quoteUnit": "Cuota",
+    "quoteQuantity": "Cantidad",
+    "quoteTotal": "Total"
+  },
+  "info": {
+    "title": "Información"
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "¿Tienes alguna duda? Contáctanos."
+  },
+  "footer": {
+    "madeWith": "Hecho con amor",
+    "by": "por nosotros"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal. ¿Intentar de nuevo?",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "search": "Buscar"
+  }
+}

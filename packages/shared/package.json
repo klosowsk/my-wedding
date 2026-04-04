@@ -1,0 +1,27 @@
+{
+  "name": "@marriage/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./validators": {
+      "types": "./src/validators.ts",
+      "default": "./src/validators.ts"
+    },
+    "./constants": {
+      "types": "./src/constants.ts",
+      "default": "./src/constants.ts"
+    },
+    "./currency": {
+      "types": "./src/currency.ts",
+      "default": "./src/currency.ts"
+    }
+  },
+  "dependencies": {
+    "zod": "^3"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Início",
+    "gifts": "Presentes",
+    "gallery": "Galeria",
+    "info": "Informações",
+    "rsvp": "Confirmar Presença"
+  },
+  "hero": {
+    "subtitle": "convidam você para celebrar, com amor, o início de sua história como um só",
+    "date": "Data do evento",
+    "venue": "Local do Evento",
+    "cta": "Confirmar Presença"
+  },
+  "countdown": {
+    "title": "Contagem Regressiva",
+    "days": "dias",
+    "hours": "horas",
+    "minutes": "minutos",
+    "seconds": "segundos"
+  },
+  "venue": {
+    "title": "Onde Será",
+    "address": "Endereço do evento",
+    "directions": "Google Maps",
+    "waze": "Waze"
+  },
+  "rsvp": {
+    "title": "Confirmação de Presença",
+    "greeting": "Olá, {name}!",
+    "question": "Quem virá ao casamento?",
+    "attending": "Vai comparecer",
+    "notAttending": "Não vai comparecer",
+    "dietaryNotes": "Restrições alimentares",
+    "message": "Mensagem para os noivos",
+    "messagePlaceholder": "Deixe uma mensagem especial...",
+    "submit": "Confirmar Presença",
+    "confirmed": "Presença confirmada!",
+    "confirmedMessage": "Obrigado por confirmar. Estamos ansiosos para celebrar com você!",
+    "declined": "Sentiremos sua falta!",
+    "declinedMessage": "Agradecemos pelo retorno. Sentiremos sua falta neste dia especial.",
+    "deadline": "Confirme até {date}",
+    "closed": "O prazo para confirmação encerrou.",
+    "invalidToken": "Link de convite inválido.",
+    "noToken": "Use o link enviado no seu convite ou digite seu código abaixo.",
+    "enterCode": "Código do convite",
+    "codePlaceholder": "Ex: SILVA2026",
+    "codeSubmit": "Buscar Convite",
+    "backHome": "Voltar ao Início",
+    "viewGifts": "Ver Lista de Presentes",
+    "adult": "adulto",
+    "child": "criança",
+    "infant": "bebê"
+  },
+  "gifts": {
+    "title": "Lista de Presentes",
+    "subtitle": "Sua presença é o nosso maior presente, mas se quiser nos presentear, aqui estão algumas sugestões.",
+    "contribute": "Presentear",
+    "funded": "Presente financiado!",
+    "remaining": "Faltam {amount}",
+    "anyAmount": "Qualquer valor",
+    "allCategories": "Todos",
+    "progress": "__PERCENT__% financiado",
+    "collected": "Arrecadado: {amount}",
+    "goal": "Meta: {amount}",
+    "quoteUnit": "Valor da cota"
+  },
+  "gallery": {
+    "title": "Galeria",
+    "subtitle": "Momentos especiais que compartilhamos.",
+    "lightbox": {
+      "close": "Fechar",
+      "previous": "Foto anterior",
+      "next": "Próxima foto",
+      "zoomIn": "Aumentar zoom",
+      "zoomOut": "Diminuir zoom",
+      "resetZoom": "Resetar zoom"
+    }
+  },
+  "payment": {
+    "title": "Presentear",
+    "pix": "PIX",
+    "stripe": "Cartão de Crédito",
+    "amount": "Valor",
+    "yourName": "Seu nome",
+    "transferred": "Já transferi",
+    "pendingMessage": "Sua contribuição foi registrada! Obrigado pela generosidade.",
+    "processing": "Processando...",
+    "qrCode": "Escaneie o QR Code ou copie o código PIX",
+    "copyCode": "Copiar Código PIX",
+    "copied": "Copiado!",
+    "quoteHint": "Escolha quantas cotas deseja oferecer",
+    "quoteUnit": "Cota",
+    "quoteQuantity": "Quantidade",
+    "quoteTotal": "Total"
+  },
+  "info": {
+    "title": "Informações"
+  },
+  "contact": {
+    "title": "Contato",
+    "subtitle": "Ficou com alguma dúvida? Entre em contato conosco."
+  },
+  "footer": {
+    "madeWith": "Feito com amor",
+    "by": "por nós"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Algo deu errado. Tente novamente?",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "confirm": "Confirmar",
+    "search": "Buscar"
+  }
+}

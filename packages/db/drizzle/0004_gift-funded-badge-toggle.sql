@@ -1,0 +1,1 @@
+ALTER TABLE "gifts" ADD COLUMN "show_funded_badge" boolean DEFAULT true NOT NULL;
