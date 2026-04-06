@@ -1,0 +1,26 @@
+name: Test My Wedding ARC Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker-smoke-test:
+    runs-on: my-wedding-arc-runner-set
+    steps:
+      - name: Show docker info
+        run: docker info
+
+      - name: Build and push smoke test image
+        run: |
+          cat > Dockerfile.arc-test <<'EOF'
+          FROM alpine:3.20
+          CMD ["echo", "Hello from my-wedding ARC runner!"]
+          EOF
+
+          docker build -f Dockerfile.arc-test -t registry.registry.svc.cluster.local:5000/my-wedding-arc-test:latest .
+          docker push registry.registry.svc.cluster.local:5000/my-wedding-arc-test:latest
+
+      - name: Pull and run smoke test image
+        run: |
+          docker pull registry.registry.svc.cluster.local:5000/my-wedding-arc-test:latest
+          docker run --rm registry.registry.svc.cluster.local:5000/my-wedding-arc-test:latest

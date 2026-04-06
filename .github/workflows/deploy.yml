@@ -10,39 +10,53 @@ on:
       - 'packages/shared/**'
       - 'Dockerfile'
       - 'migrate.mjs'
+      - 'package.json'
+      - 'bun.lock'
+      - 'turbo.json'
+      - 'marriage.config.ts'
+      - '.github/workflows/deploy.yml'
+
+concurrency:
+  group: deploy-my-wedding-main
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
-    runs-on: lisa-arc-runner-set
+    runs-on: my-wedding-arc-runner-set
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
       - name: Set image tag
-        run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+        run: echo "TAG=${GITHUB_SHA::8}" >> "$GITHUB_ENV"
 
-      - name: Build my-wedding
+      - name: Build my-wedding image
         run: |
-          docker build -t registry.registry.svc.cluster.local:5000/my-wedding:$TAG \
-                       -t registry.registry.svc.cluster.local:5000/my-wedding:latest .
+          docker build \
+            -t registry.registry.svc.cluster.local:5000/my-wedding:$TAG \
+            -t registry.registry.svc.cluster.local:5000/my-wedding:latest .
 
       - name: Push images
-        run: |
-          docker push registry.registry.svc.cluster.local:5000/my-wedding --all-tags
+        run: docker push registry.registry.svc.cluster.local:5000/my-wedding --all-tags
 
       - name: Update k8s manifests (GitOps)
         env:
           K3S_HOMELAB_PAT: ${{ secrets.K3S_HOMELAB_PAT }}
         run: |
-          git clone https://x-access-token:${K3S_HOMELAB_PAT}@github.com/klosowsk/k3s-homelab.git /tmp/k3s-homelab
+          if [ -z "${K3S_HOMELAB_PAT}" ]; then
+            echo "K3S_HOMELAB_PAT is not set"
+            exit 1
+          fi
+
+          git clone --depth 1 https://x-access-token:${K3S_HOMELAB_PAT}@github.com/klosowsk/k3s-homelab.git /tmp/k3s-homelab
           cd /tmp/k3s-homelab
 
           REGISTRY="registry.registry.svc.cluster.local:5000"
 
           sed -i "s|image: ${REGISTRY}/my-wedding:.*|image: ${REGISTRY}/my-wedding:${TAG}|g" argocd-apps/my-wedding/deployment.yaml
-          sed -i "s|image: ${REGISTRY}/my-wedding:.*|image: ${REGISTRY}/my-wedding:${TAG}|g" argocd-apps/my-wedding/deployment-tunnel.yaml
 
           git config user.name "my-wedding-ci"
           git config user.email "ci@julianaerodrigo.com"
-          git add -A
+          git add argocd-apps/my-wedding/deployment.yaml
           git diff --cached --quiet || git commit -m "deploy: my-wedding ${TAG}"
           git push
