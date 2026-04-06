@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-wedding-web
+  namespace: my-wedding
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-wedding-web
+  template:
+    metadata:
+      labels:
+        app: my-wedding-web
+    spec:
+      initContainers:
+        - name: migrate
+          image: registry.registry.svc.cluster.local:5000/my-wedding:latest
+          command:
+            ["node", "--loader", "ts-node/esm", "packages/db/src/migrate.ts"]
+          workingDir: /app
+          env:
+            - name: NODE_ENV
+              value: "production"
+          envFrom:
+            - secretRef:
+                name: my-wedding-secrets
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: 500m
+      containers:
+        - name: my-wedding-web
+          image: registry.registry.svc.cluster.local:5000/my-wedding:latest
+          ports:
+            - containerPort: 3333
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: PORT
+              value: "3333"
+          envFrom:
+            - configMapRef:
+                name: my-wedding-config
+            - secretRef:
+                name: my-wedding-secrets
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3333
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3333
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 200m
+            limits:
+              memory: 512Mi
+              cpu: 1000m
