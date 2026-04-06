@@ -26,6 +26,9 @@ const SITE_CONFIG_KEYS = {
   currencyLocale: "currency_locale",
   rsvpDeadline: "rsvp_deadline",
   inviteImageUrl: "invite_image_url",
+  globalInviteMessagePt: "global_invite_message_pt",
+  globalInviteMessageEn: "global_invite_message_en",
+  globalInviteMessageEs: "global_invite_message_es",
   heroSubtitlePt: "hero_subtitle_pt",
   heroSubtitleEn: "hero_subtitle_en",
   heroSubtitleEs: "hero_subtitle_es",
@@ -56,6 +59,9 @@ export interface SiteSettings {
   currencyLocale: string;
   rsvpDeadline: string | null;
   inviteImageUrl: string | null;
+  globalInviteMessagePt: string | null;
+  globalInviteMessageEn: string | null;
+  globalInviteMessageEs: string | null;
   heroSubtitlePt: string | null;
   heroSubtitleEn: string | null;
   heroSubtitleEs: string | null;
@@ -88,6 +94,9 @@ const DEFAULT_SETTINGS: SiteSettings = {
   currencyLocale: staticConfig.currency.locale,
   rsvpDeadline: null,
   inviteImageUrl: null,
+  globalInviteMessagePt: null,
+  globalInviteMessageEn: null,
+  globalInviteMessageEs: null,
   heroSubtitlePt: null,
   heroSubtitleEn: null,
   heroSubtitleEs: null,
@@ -276,6 +285,21 @@ function toSiteSettings(rows: { key: string; value: string | null }[]): SiteSett
       SITE_CONFIG_KEYS.inviteImageUrl,
       DEFAULT_SETTINGS.inviteImageUrl
     ),
+    globalInviteMessagePt: readNullableString(
+      rowMap,
+      SITE_CONFIG_KEYS.globalInviteMessagePt,
+      DEFAULT_SETTINGS.globalInviteMessagePt
+    ),
+    globalInviteMessageEn: readNullableString(
+      rowMap,
+      SITE_CONFIG_KEYS.globalInviteMessageEn,
+      DEFAULT_SETTINGS.globalInviteMessageEn
+    ),
+    globalInviteMessageEs: readNullableString(
+      rowMap,
+      SITE_CONFIG_KEYS.globalInviteMessageEs,
+      DEFAULT_SETTINGS.globalInviteMessageEs
+    ),
     heroSubtitlePt: readNullableString(
       rowMap,
       SITE_CONFIG_KEYS.heroSubtitlePt,
@@ -381,6 +405,30 @@ function toStoragePatch(
   }
   if ("inviteImageUrl" in patch && patch.inviteImageUrl !== undefined) {
     entries[SITE_CONFIG_KEYS.inviteImageUrl] = normalizeNullableString(patch.inviteImageUrl);
+  }
+  if (
+    "globalInviteMessagePt" in patch &&
+    patch.globalInviteMessagePt !== undefined
+  ) {
+    entries[SITE_CONFIG_KEYS.globalInviteMessagePt] = normalizeNullableString(
+      patch.globalInviteMessagePt
+    );
+  }
+  if (
+    "globalInviteMessageEn" in patch &&
+    patch.globalInviteMessageEn !== undefined
+  ) {
+    entries[SITE_CONFIG_KEYS.globalInviteMessageEn] = normalizeNullableString(
+      patch.globalInviteMessageEn
+    );
+  }
+  if (
+    "globalInviteMessageEs" in patch &&
+    patch.globalInviteMessageEs !== undefined
+  ) {
+    entries[SITE_CONFIG_KEYS.globalInviteMessageEs] = normalizeNullableString(
+      patch.globalInviteMessageEs
+    );
   }
   if ("heroSubtitlePt" in patch && patch.heroSubtitlePt !== undefined) {
     entries[SITE_CONFIG_KEYS.heroSubtitlePt] = normalizeNullableString(patch.heroSubtitlePt);

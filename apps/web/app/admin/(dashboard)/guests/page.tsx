@@ -41,6 +41,11 @@ interface Guest {
   createdAt: string;
 }
 
+interface NewMember {
+  name: string;
+  ageGroup: "adult" | "child" | "infant";
+}
+
 const statusVariantMap: Record<string, BadgeVariant> = {
   confirmed: "confirmed",
   pending: "pending",
@@ -83,6 +88,7 @@ export default function AdminGuestsPage() {
   const [newEmail, setNewEmail] = useState("");
   const [newLanguage, setNewLanguage] = useState("pt-BR");
   const [newNotes, setNewNotes] = useState("");
+  const [newMembers, setNewMembers] = useState<NewMember[]>([]);
 
   const queryParams = new URLSearchParams();
   if (search) queryParams.set("search", search);
@@ -137,16 +143,47 @@ export default function AdminGuestsPage() {
     setNewEmail("");
     setNewLanguage("pt-BR");
     setNewNotes("");
+    setNewMembers([]);
+  }
+
+  function addMemberRow() {
+    setNewMembers((prev) => [...prev, { name: "", ageGroup: "adult" }]);
+  }
+
+  function updateMemberRow(index: number, field: keyof NewMember, value: string) {
+    setNewMembers((prev) =>
+      prev.map((member, i) =>
+        i === index
+          ? {
+              ...member,
+              [field]: field === "ageGroup" ? (value as NewMember["ageGroup"]) : value,
+            }
+          : member
+      )
+    );
+  }
+
+  function removeMemberRow(index: number) {
+    setNewMembers((prev) => prev.filter((_, i) => i !== index));
   }
 
   function handleCreateGuest(e: React.FormEvent) {
     e.preventDefault();
+
+    const validMembers = newMembers
+      .filter((member) => member.name.trim().length > 0)
+      .map((member) => ({
+        name: member.name.trim(),
+        ageGroup: member.ageGroup,
+      }));
+
     createMutation.mutate({
       familyName: newFamilyName,
       phone: newPhone || null,
       email: newEmail || null,
       language: newLanguage,
       notes: newNotes || null,
+      ...(validMembers.length > 0 ? { members: validMembers } : {}),
     });
   }
 
@@ -358,10 +395,64 @@ export default function AdminGuestsPage() {
             onChange={(e) => setNewNotes(e.target.value)}
             placeholder="Optional notes..."
           />
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-semibold text-heading">
+                Members ({newMembers.length})
+              </label>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={addMemberRow}
+              >
+                + Add Member
+              </Button>
+            </div>
+
+            {newMembers.map((member, index) => (
+              <div key={index} className="flex items-start gap-2">
+                <Input
+                  placeholder="Member name"
+                  value={member.name}
+                  onChange={(e) => updateMemberRow(index, "name", e.target.value)}
+                  className="flex-1"
+                />
+                <Select
+                  value={member.ageGroup}
+                  onChange={(e) => updateMemberRow(index, "ageGroup", e.target.value)}
+                  className="w-28"
+                >
+                  <option value="adult">Adult</option>
+                  <option value="child">Child</option>
+                  <option value="infant">Infant</option>
+                </Select>
+                <button
+                  type="button"
+                  onClick={() => removeMemberRow(index)}
+                  className="p-2 rounded-lg text-muted hover:text-error hover:bg-error-bg transition-colors shrink-0 cursor-pointer"
+                  aria-label="Remove member"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+
+            {newMembers.length === 0 && (
+              <p className="text-xs text-muted">
+                You can add family members now or later from the guest detail page.
+              </p>
+            )}
+          </div>
+
           <FormActions
             onCancel={closeAddModal}
             submitLabel="Create Guest"
             loading={createMutation.isPending}
+            className="sticky bottom-0 z-10 bg-warm-white border-t border-secondary pt-3 mt-6"
           />
         </form>
       </Modal>

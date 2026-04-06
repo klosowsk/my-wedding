@@ -39,6 +39,9 @@ interface SiteSettings {
   contactEmail: string | null;
   rsvpDeadline: string | null;
   inviteImageUrl: string | null;
+  globalInviteMessagePt: string | null;
+  globalInviteMessageEn: string | null;
+  globalInviteMessageEs: string | null;
   heroSubtitlePt: string | null;
   heroSubtitleEn: string | null;
   heroSubtitleEs: string | null;
@@ -69,6 +72,9 @@ interface SettingsForm {
   contactEmail: string;
   rsvpDeadline: string;
   inviteImageUrl: string;
+  globalInviteMessagePt: string;
+  globalInviteMessageEn: string;
+  globalInviteMessageEs: string;
   heroSubtitlePt: string;
   heroSubtitleEn: string;
   heroSubtitleEs: string;
@@ -105,6 +111,9 @@ const EMPTY_FORM: SettingsForm = {
   contactEmail: "",
   rsvpDeadline: "",
   inviteImageUrl: "",
+  globalInviteMessagePt: "",
+  globalInviteMessageEn: "",
+  globalInviteMessageEs: "",
   heroSubtitlePt: "",
   heroSubtitleEn: "",
   heroSubtitleEs: "",
@@ -116,6 +125,7 @@ export default function AdminSettingsPage() {
 
   const [form, setForm] = useState<SettingsForm>(EMPTY_FORM);
   const [initialized, setInitialized] = useState(false);
+  const [inviteMsgLangTab, setInviteMsgLangTab] = useState("pt");
   const [subtitleLangTab, setSubtitleLangTab] = useState("pt");
 
   const { data: settings, isLoading, error } = useQuery<SiteSettings>({
@@ -150,6 +160,9 @@ export default function AdminSettingsPage() {
         contactEmail: settings.contactEmail ?? "",
         rsvpDeadline: settings.rsvpDeadline ?? "",
         inviteImageUrl: settings.inviteImageUrl ?? "",
+        globalInviteMessagePt: settings.globalInviteMessagePt ?? "",
+        globalInviteMessageEn: settings.globalInviteMessageEn ?? "",
+        globalInviteMessageEs: settings.globalInviteMessageEs ?? "",
         heroSubtitlePt: settings.heroSubtitlePt ?? "",
         heroSubtitleEn: settings.heroSubtitleEn ?? "",
         heroSubtitleEs: settings.heroSubtitleEs ?? "",
@@ -202,6 +215,9 @@ export default function AdminSettingsPage() {
       contactEmail: form.contactEmail || null,
       rsvpDeadline: form.rsvpDeadline || null,
       inviteImageUrl: form.inviteImageUrl || null,
+      globalInviteMessagePt: form.globalInviteMessagePt || null,
+      globalInviteMessageEn: form.globalInviteMessageEn || null,
+      globalInviteMessageEs: form.globalInviteMessageEs || null,
       heroSubtitlePt: form.heroSubtitlePt || null,
       heroSubtitleEn: form.heroSubtitleEn || null,
       heroSubtitleEs: form.heroSubtitleEs || null,
@@ -429,6 +445,47 @@ export default function AdminSettingsPage() {
               placeholder="https://example.com/invite-card.jpg"
               helperText="Optional image to include with invites"
             />
+
+            <div className="space-y-3">
+              <Tabs
+                tabs={subtitleTabs}
+                activeTab={inviteMsgLangTab}
+                onTabChange={setInviteMsgLangTab}
+              />
+
+              {inviteMsgLangTab === "pt" && (
+                <Textarea
+                  label="Global invite message (PT-BR)"
+                  value={form.globalInviteMessagePt}
+                  onChange={(e) => setField("globalInviteMessagePt", e.target.value)}
+                  rows={4}
+                  placeholder="Olá, {familyName}! {person1} e {person2} gostariam de convidá-los..."
+                  helperText="Template for PT-BR invites. Variables: {familyName}, {couple}, {person1}, {person2}, {date}, {venue}, {link}"
+                />
+              )}
+
+              {inviteMsgLangTab === "en" && (
+                <Textarea
+                  label="Global invite message (EN)"
+                  value={form.globalInviteMessageEn}
+                  onChange={(e) => setField("globalInviteMessageEn", e.target.value)}
+                  rows={4}
+                  placeholder="Hello, {familyName}! {person1} and {person2} would like to invite you..."
+                  helperText="Template for English invites. Variables: {familyName}, {couple}, {person1}, {person2}, {date}, {venue}, {link}"
+                />
+              )}
+
+              {inviteMsgLangTab === "es" && (
+                <Textarea
+                  label="Global invite message (ES)"
+                  value={form.globalInviteMessageEs}
+                  onChange={(e) => setField("globalInviteMessageEs", e.target.value)}
+                  rows={4}
+                  placeholder="¡Hola, {familyName}! {person1} y {person2} nos encantaría invitarles..."
+                  helperText="Template for Spanish invites. Variables: {familyName}, {couple}, {person1}, {person2}, {date}, {venue}, {link}"
+                />
+              )}
+            </div>
 
             <div className="space-y-3">
               <Tabs

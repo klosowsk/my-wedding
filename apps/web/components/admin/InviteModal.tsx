@@ -40,6 +40,9 @@ interface SettingsContext {
   coupleName2: string;
   eventDate: string;
   venueName: string;
+  globalInviteMessagePt: string | null;
+  globalInviteMessageEn: string | null;
+  globalInviteMessageEs: string | null;
 }
 
 interface InviteModalProps {
@@ -117,6 +120,13 @@ function formatInviteDate(dateIso: string, language: string): string {
   }).format(new Date(`${dateIso}T12:00:00`));
 }
 
+function applyTemplateVars(template: string, vars: Record<string, string>): string {
+  return Object.entries(vars).reduce(
+    (message, [key, value]) => message.replaceAll(`{${key}}`, value),
+    template
+  );
+}
+
 function InviteModal({ guest, open, onClose, onSent }: InviteModalProps) {
   const { toast } = useToast();
   const [selectedChannel, setSelectedChannel] = useState<InviteChannel>("manual");
@@ -185,8 +195,25 @@ function InviteModal({ guest, open, onClose, onSent }: InviteModalProps) {
     const familyName = guest.familyName;
     const eventDate = formatInviteDate(settings?.eventDate || "2026-12-31", guest.language);
 
+    const globalTemplate =
+      guest.language === "en"
+        ? settings?.globalInviteMessageEn
+        : guest.language === "es"
+          ? settings?.globalInviteMessageEs
+          : settings?.globalInviteMessagePt;
+
     let defaultMsg: string;
-    if (guest.language === "en") {
+    if (globalTemplate) {
+      defaultMsg = applyTemplateVars(globalTemplate, {
+        familyName,
+        couple: `${p1} & ${p2}`,
+        person1: p1,
+        person2: p2,
+        date: eventDate,
+        venue: venueName,
+        link,
+      });
+    } else if (guest.language === "en") {
       defaultMsg = `Hello, ${familyName}! ${p1} and ${p2} would like to invite you to our wedding!\n\u{1F4C5} ${eventDate} | \u{1F4CD} ${venueName}\nConfirm here: ${link}`;
     } else if (guest.language === "es") {
       defaultMsg = `\u{00A1}Hola, ${familyName}! ${p1} y ${p2} nos encantaria invitarles a nuestra boda!\n\u{1F4C5} ${eventDate} | \u{1F4CD} ${venueName}\nConfirma aqui: ${link}`;

@@ -69,6 +69,8 @@ export default async function HomePage({
   const hasGiftsEntry = wedding.features.giftsEnabled && publicGifts.length > 0;
   const hasVenueEntry =
     Boolean(wedding.event.venue.name?.trim()) && Boolean(wedding.event.venue.address?.trim());
+  const hasContactInfo =
+    Boolean(wedding.event.contact.phone) || Boolean(wedding.event.contact.email);
 
   const secondaryHeroCtas = [
     hasGiftsEntry && { label: t("nav.gifts"), href: `/${locale}/gifts` },
@@ -160,17 +162,21 @@ export default async function HomePage({
         </>
       )}
 
-      <BotanicalDivider />
+      {hasContactInfo && (
+        <>
+          <BotanicalDivider />
 
-      {/* Contact Section */}
-      <section className="py-14 md:py-20">
-        <ContactSection
-          title={t("contact.title")}
-          subtitle={t("contact.subtitle")}
-          phone={wedding.event.contact.phone}
-          email={wedding.event.contact.email}
-        />
-      </section>
+          {/* Contact Section */}
+          <section className="py-14 md:py-20">
+            <ContactSection
+              title={t("contact.title")}
+              subtitle={t("contact.subtitle")}
+              phone={wedding.event.contact.phone}
+              email={wedding.event.contact.email}
+            />
+          </section>
+        </>
+      )}
 
     </PublicLayout>
   );

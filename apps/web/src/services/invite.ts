@@ -29,6 +29,9 @@ interface InviteContext {
   couple: readonly [string, string];
   venueName: string;
   eventDate: string;
+  globalInviteMessagePt: string | null;
+  globalInviteMessageEn: string | null;
+  globalInviteMessageEs: string | null;
 }
 
 function getDefaultInviteContext(): InviteContext {
@@ -36,16 +39,23 @@ function getDefaultInviteContext(): InviteContext {
     couple: config.event.couple,
     venueName: config.event.venue.name,
     eventDate: config.event.date,
+    globalInviteMessagePt: null,
+    globalInviteMessageEn: null,
+    globalInviteMessageEs: null,
   };
 }
 
 async function getInviteContext(): Promise<InviteContext> {
   try {
-    const wedding = await siteConfigService.getWeddingConfig();
+    const settings = await siteConfigService.getSettings();
+
     return {
-      couple: wedding.event.couple,
-      venueName: wedding.event.venue.name,
-      eventDate: wedding.event.date,
+      couple: [settings.coupleName1, settings.coupleName2],
+      venueName: settings.venueName,
+      eventDate: settings.eventDate,
+      globalInviteMessagePt: settings.globalInviteMessagePt,
+      globalInviteMessageEn: settings.globalInviteMessageEn,
+      globalInviteMessageEs: settings.globalInviteMessageEs,
     };
   } catch {
     return getDefaultInviteContext();
@@ -96,6 +106,13 @@ export function getInviteLink(
   return `${normalizeBaseUrl(baseUrl)}/${guest.language}/i/${guest.token}`;
 }
 
+function applyTemplateVars(template: string, vars: Record<string, string>): string {
+  return Object.entries(vars).reduce(
+    (message, [key, value]) => message.replaceAll(`{${key}}`, value),
+    template
+  );
+}
+
 /**
  * Format a personalized invite message for a guest.
  * Translates based on the guest's language preference.
@@ -109,6 +126,25 @@ export function formatInviteMessage(
   const [person1, person2] = context.couple;
   const { venueName, eventDate } = context;
   const dateLabel = formatEventDateForInvite(eventDate, guest.language);
+
+  const globalTemplate =
+    guest.language === "en"
+      ? context.globalInviteMessageEn
+      : guest.language === "es"
+        ? context.globalInviteMessageEs
+        : context.globalInviteMessagePt;
+
+  if (globalTemplate) {
+    return applyTemplateVars(globalTemplate, {
+      familyName: guest.familyName,
+      couple: `${person1} & ${person2}`,
+      person1,
+      person2,
+      date: dateLabel,
+      venue: venueName,
+      link,
+    });
+  }
 
   switch (guest.language) {
     case "en":
