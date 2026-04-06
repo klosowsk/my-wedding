@@ -60,7 +60,7 @@ export const config = {
   },
 
   admin: {
-    emails: ["klosowsk@gmail.com"],
+    emails: ["admin@example.com"],
   },
 } as const;
 
