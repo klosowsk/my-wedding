@@ -214,11 +214,38 @@ function InviteModal({ guest, open, onClose, onSent }: InviteModalProps) {
         link,
       });
     } else if (guest.language === "en") {
-      defaultMsg = `Hello, ${familyName}! ${p1} and ${p2} would like to invite you to our wedding!\n\u{1F4C5} ${eventDate} | \u{1F4CD} ${venueName}\nConfirm here: ${link}`;
+      defaultMsg = [
+        `Hello, ${familyName}!`,
+        "",
+        `${p1} and ${p2} would love to invite you to our wedding!`,
+        `\u{1F4C5} ${eventDate}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Please confirm here:",
+        link,
+      ].join("\n");
     } else if (guest.language === "es") {
-      defaultMsg = `\u{00A1}Hola, ${familyName}! ${p1} y ${p2} nos encantaria invitarles a nuestra boda!\n\u{1F4C5} ${eventDate} | \u{1F4CD} ${venueName}\nConfirma aqui: ${link}`;
+      defaultMsg = [
+        `\u{00A1}Hola, ${familyName}!`,
+        "",
+        `${p1} y ${p2} queremos invitarles a nuestra boda.`,
+        `\u{1F4C5} ${eventDate}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Confirmen aquí:",
+        link,
+      ].join("\n");
     } else {
-      defaultMsg = `Ola, ${familyName}! ${p1} e ${p2} gostariam de convida-los para o casamento!\n\u{1F4C5} ${eventDate} | \u{1F4CD} ${venueName}\nConfirme aqui: ${link}`;
+      defaultMsg = [
+        `Olá, ${familyName}!`,
+        "",
+        `${p1} e ${p2} gostariam de convidá-los para o nosso casamento!`,
+        `\u{1F4C5} ${eventDate}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Confirme sua presença aqui:",
+        link,
+      ].join("\n");
     }
 
     setEditableMessage(defaultMsg);

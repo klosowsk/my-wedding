@@ -149,24 +149,39 @@ export function formatInviteMessage(
   switch (guest.language) {
     case "en":
       return [
-        `Hello, ${guest.familyName}! ${person1} and ${person2} would like to invite you to our wedding!`,
-        `\u{1F4C5} ${dateLabel} | \u{1F4CD} ${venueName}`,
-        `Confirm here: ${link}`,
+        `Hello, ${guest.familyName}!`,
+        "",
+        `${person1} and ${person2} would love to invite you to our wedding!`,
+        `\u{1F4C5} ${dateLabel}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Please confirm here:",
+        link,
       ].join("\n");
 
     case "es":
       return [
-        `\u{00A1}Hola, ${guest.familyName}! ${person1} y ${person2} nos encantaria invitarles a nuestra boda!`,
-        `\u{1F4C5} ${dateLabel} | \u{1F4CD} ${venueName}`,
-        `Confirma aqui: ${link}`,
+        `\u{00A1}Hola, ${guest.familyName}!`,
+        "",
+        `${person1} y ${person2} queremos invitarles a nuestra boda.`,
+        `\u{1F4C5} ${dateLabel}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Confirmen aquí:",
+        link,
       ].join("\n");
 
     // pt-BR (default)
     default:
       return [
-        `Ola, ${guest.familyName}! ${person1} e ${person2} gostariam de convida-los para o casamento!`,
-        `\u{1F4C5} ${dateLabel} | \u{1F4CD} ${venueName}`,
-        `Confirme aqui: ${link}`,
+        `Olá, ${guest.familyName}!`,
+        "",
+        `${person1} e ${person2} gostariam de convidá-los para o nosso casamento!`,
+        `\u{1F4C5} ${dateLabel}`,
+        `\u{1F4CD} ${venueName}`,
+        "",
+        "Confirme sua presença aqui:",
+        link,
       ].join("\n");
   }
 }
@@ -190,21 +205,21 @@ function buildInviteEmailHtml(
     ? `Hello, ${guest.familyName}!`
     : isEs
       ? `\u{00A1}Hola, ${guest.familyName}!`
-      : `Ola, ${guest.familyName}!`;
+      : `Olá, ${guest.familyName}!`;
 
   const inviteLine = isEn
-    ? `${person1} and ${person2} would like to invite you to our wedding!`
+    ? `${person1} and ${person2} would love to invite you to our wedding!`
     : isEs
-      ? `${person1} y ${person2} nos encantaria invitarles a nuestra boda!`
-      : `${person1} e ${person2} gostariam de convida-los para o casamento!`;
+      ? `${person1} y ${person2} queremos invitarles a nuestra boda.`
+      : `${person1} e ${person2} gostariam de convidá-los para o nosso casamento!`;
 
   const dateLine = formatEventDateForInvite(eventDate, guest.language);
 
   const buttonText = isEn
     ? "Confirm Attendance"
     : isEs
-      ? "Confirmar Asistencia"
-      : "Confirmar Presenca";
+      ? "Confirmar asistencia"
+      : "Confirmar presença";
 
   return `
 <!DOCTYPE html>
@@ -322,8 +337,8 @@ export async function sendInvite(
       const subject = isEn
         ? "You're invited to our wedding!"
         : isEs
-          ? "Estan invitados a nuestra boda!"
-          : "Voces estao convidados para o nosso casamento!";
+          ? "¡Están invitados a nuestra boda!"
+          : "Vocês estão convidados para o nosso casamento!";
 
       const html = buildInviteEmailHtml(guest, baseUrl, inviteContext);
       const emailResult = await resend.sendInviteEmail(guest.email, subject, html);
