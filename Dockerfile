@@ -36,11 +36,14 @@ FROM base AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps ./apps
 COPY --from=deps /app/packages ./packages
 
 COPY apps/web ./apps/web
 COPY packages/db ./packages/db
 COPY packages/shared ./packages/shared
+COPY tsconfig.base.json ./tsconfig.base.json
+COPY marriage.config.ts ./marriage.config.ts
 COPY migrate.mjs ./migrate.mjs
 
 ENV NEXT_TELEMETRY_DISABLED=1
