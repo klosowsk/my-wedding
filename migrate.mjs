@@ -27,13 +27,15 @@ async function runMigrations() {
     console.log("PostgreSQL connection successful");
 
     // Check if we have migration files
-    const hasMigrations = existsSync("./packages/db/drizzle/meta/_journal.json");
+    const migrationsJournalPath = "/app/packages/db/drizzle/meta/_journal.json";
+    const migrationsFolder = "/app/packages/db/drizzle";
+    const hasMigrations = existsSync(migrationsJournalPath);
 
     if (hasMigrations) {
       const { drizzle } = await import("drizzle-orm/postgres-js");
       const { migrate } = await import("drizzle-orm/postgres-js/migrator");
       const db = drizzle(sql);
-      await migrate(db, { migrationsFolder: "./packages/db/drizzle" });
+      await migrate(db, { migrationsFolder });
       console.log("PostgreSQL migrations completed successfully");
     } else {
       console.log("No migrations found - skipping");
