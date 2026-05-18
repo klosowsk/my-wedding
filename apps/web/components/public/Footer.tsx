@@ -4,6 +4,10 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { locales, type Locale } from "@/lib/i18n/routing";
+import {
+  getVisiblePublicNavLinks,
+  type PublicNavVisibility,
+} from "./navigation";
 
 export default function Footer({
   className = "",
@@ -16,10 +20,7 @@ export default function Footer({
   couple: readonly [string, string];
   eventDate: string;
   venueName: string;
-  features: {
-    giftsEnabled: boolean;
-    galleryEnabled: boolean;
-  };
+  features: PublicNavVisibility;
 }) {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
@@ -29,6 +30,7 @@ export default function Footer({
   const currentLocale = (locales.find((l) => pathname.startsWith(`/${l}`)) ??
     "pt-BR") as Locale;
   const basePath = `/${currentLocale}`;
+  const navLinks = getVisiblePublicNavLinks(features);
 
   return (
     <footer
@@ -59,29 +61,16 @@ export default function Footer({
         </p>
 
         {/* Nav links */}
-        <div className="flex items-center justify-center gap-6 mb-6">
-          <Link
-            href={basePath}
-            className="font-body text-sm text-muted hover:text-primary transition-colors duration-200"
-          >
-            {tNav("home")}
-          </Link>
-          {features.giftsEnabled && (
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-6">
+          {navLinks.map((link) => (
             <Link
-              href={`${basePath}/gifts`}
+              key={link.key}
+              href={`${basePath}${link.href}`}
               className="font-body text-sm text-muted hover:text-primary transition-colors duration-200"
             >
-              {tNav("gifts")}
+              {tNav(link.key)}
             </Link>
-          )}
-          {features.galleryEnabled && (
-            <Link
-              href={`${basePath}/gallery`}
-              className="font-body text-sm text-muted hover:text-primary transition-colors duration-200"
-            >
-              {tNav("gallery")}
-            </Link>
-          )}
+          ))}
         </div>
 
         {/* Divider */}

@@ -30,6 +30,7 @@ interface SiteSettings {
   stripeEnabled: boolean;
   pixEnabled: boolean;
   rsvpEnabled: boolean;
+  rsvpExternalUrl: string | null;
   giftsEnabled: boolean;
   galleryEnabled: boolean;
   maxPlusOnes: number;
@@ -63,6 +64,7 @@ interface SettingsForm {
   stripeEnabled: boolean;
   pixEnabled: boolean;
   rsvpEnabled: boolean;
+  rsvpExternalUrl: string;
   giftsEnabled: boolean;
   galleryEnabled: boolean;
   maxPlusOnes: string;
@@ -102,6 +104,7 @@ const EMPTY_FORM: SettingsForm = {
   stripeEnabled: false,
   pixEnabled: true,
   rsvpEnabled: true,
+  rsvpExternalUrl: "",
   giftsEnabled: true,
   galleryEnabled: true,
   maxPlusOnes: "4",
@@ -151,6 +154,7 @@ export default function AdminSettingsPage() {
         stripeEnabled: settings.stripeEnabled,
         pixEnabled: settings.pixEnabled,
         rsvpEnabled: settings.rsvpEnabled,
+        rsvpExternalUrl: settings.rsvpExternalUrl ?? "",
         giftsEnabled: settings.giftsEnabled,
         galleryEnabled: settings.galleryEnabled,
         maxPlusOnes: String(settings.maxPlusOnes),
@@ -206,6 +210,7 @@ export default function AdminSettingsPage() {
       stripeEnabled: form.stripeEnabled,
       pixEnabled: form.pixEnabled,
       rsvpEnabled: form.rsvpEnabled,
+      rsvpExternalUrl: form.rsvpExternalUrl || null,
       giftsEnabled: form.giftsEnabled,
       galleryEnabled: form.galleryEnabled,
       maxPlusOnes: Number.parseInt(form.maxPlusOnes || "0", 10),
@@ -435,6 +440,15 @@ export default function AdminSettingsPage() {
               value={form.rsvpDeadline}
               onChange={(e) => setField("rsvpDeadline", e.target.value)}
               helperText="After this date, guests will no longer be able to confirm"
+            />
+
+            <Input
+              label="External RSVP URL"
+              type="url"
+              value={form.rsvpExternalUrl}
+              onChange={(e) => setField("rsvpExternalUrl", e.target.value)}
+              placeholder="https://wa.me/5542999124628"
+              helperText="When filled, RSVP buttons and invite links redirect guests to this external URL instead of the built-in RSVP form"
             />
 
             <Input

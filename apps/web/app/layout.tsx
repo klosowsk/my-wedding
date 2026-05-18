@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { config } from "@/lib/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang={config.i18n.defaultLocale} suppressHydrationWarning>
       <body className="bg-warm-white text-body">{children}</body>
     </html>
   );

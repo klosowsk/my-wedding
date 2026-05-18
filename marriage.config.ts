@@ -50,8 +50,14 @@ export const config = {
     locale: "pt-BR",
   },
 
+  i18n: {
+    defaultLocale: "pt-BR",
+    localeDetection: false,
+  },
+
   features: {
     rsvpEnabled: true,
+    rsvpExternalUrl: null,
     giftsEnabled: true,
     galleryEnabled: true,
     pix: { enabled: true },

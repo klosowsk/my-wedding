@@ -1,9 +1,12 @@
 {
   "nav": {
     "home": "Home",
+    "countdown": "Countdown",
+    "venue": "Map",
     "gifts": "Gifts",
     "gallery": "Gallery",
     "info": "Info",
+    "contact": "Contact",
     "rsvp": "RSVP"
   },
   "hero": {

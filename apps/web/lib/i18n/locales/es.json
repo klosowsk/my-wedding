@@ -1,9 +1,12 @@
 {
   "nav": {
     "home": "Inicio",
+    "countdown": "Cuenta regresiva",
+    "venue": "Mapa",
     "gifts": "Regalos",
     "gallery": "Galería",
     "info": "Información",
+    "contact": "Contacto",
     "rsvp": "Confirmar Asistencia"
   },
   "hero": {

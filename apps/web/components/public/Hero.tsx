@@ -9,6 +9,7 @@ interface HeroProps {
   couple: readonly [string, string];
   rsvpHref?: string;
   secondaryCtas?: Array<{ label: string; href: string }>;
+  id?: string;
   className?: string;
 }
 
@@ -20,12 +21,14 @@ export default function Hero({
   couple,
   rsvpHref,
   secondaryCtas = [],
+  id,
   className = "",
 }: HeroProps) {
   const [first, second] = couple;
 
   return (
     <section
+      id={id}
       className={[
         "relative min-h-dvh flex flex-col items-center justify-center bg-warm-white overflow-hidden pt-20",
         className,

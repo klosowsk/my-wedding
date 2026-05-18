@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 
 import { guestService } from "@/src/services/guest";
@@ -35,15 +35,20 @@ export default async function RSVPPage({
   const { locale, token } = await params;
   setRequestLocale(locale);
 
-  const [t, guest, wedding] = await Promise.all([
+  const [t, wedding] = await Promise.all([
     getTranslations("rsvp"),
-    guestService.getByToken(token),
     siteConfigService.getWeddingConfig(),
   ]);
 
   if (!wedding.features.rsvpEnabled) {
     notFound();
   }
+
+  if (wedding.features.rsvpExternalUrl) {
+    redirect(wedding.features.rsvpExternalUrl);
+  }
+
+  const guest = await guestService.getByToken(token);
 
   return (
     <PublicLayout>

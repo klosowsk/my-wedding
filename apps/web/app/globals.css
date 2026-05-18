@@ -172,6 +172,7 @@
    ============================================================ */
 
 html {
+  scroll-behavior: smooth;
   background-color: var(--color-warm-white);
   color: var(--color-text);
   font-family: var(--font-body);
@@ -179,6 +180,12 @@ html {
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {

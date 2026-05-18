@@ -114,6 +114,7 @@ export const updateAdminSettingsSchema = z
     stripeEnabled: z.boolean(),
     pixEnabled: z.boolean(),
     rsvpEnabled: z.boolean(),
+    rsvpExternalUrl: z.string().url().nullable(),
     giftsEnabled: z.boolean(),
     galleryEnabled: z.boolean(),
     maxPlusOnes: z.number().int().min(0).max(20),

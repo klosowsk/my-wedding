@@ -75,25 +75,27 @@ export default async function HomePage({
   const secondaryHeroCtas = [
     hasGiftsEntry && { label: t("nav.gifts"), href: `/${locale}/gifts` },
   ].filter(Boolean) as Array<{ label: string; href: string }>;
+  const rsvpHref = wedding.features.rsvpExternalUrl ?? `/${locale}/rsvp`;
 
   return (
     <PublicLayout>
 
       {/* Hero Section */}
       <Hero
+        id="inicio"
         subtitle={heroSubtitle}
         date={heroDate}
         venue={wedding.event.venue.name}
         cta={wedding.features.rsvpEnabled ? t("hero.cta") : undefined}
         couple={wedding.event.couple}
-        rsvpHref={wedding.features.rsvpEnabled ? `/${locale}/rsvp` : undefined}
+        rsvpHref={wedding.features.rsvpEnabled ? rsvpHref : undefined}
         secondaryCtas={secondaryHeroCtas}
       />
 
       <BotanicalDivider />
 
       {/* Countdown Section */}
-      <section className="py-14 md:py-20">
+      <section id="countdown" className="py-14 md:py-20 scroll-mt-24">
         <div className="max-w-[1024px] mx-auto px-6 md:px-12">
           <h2 className="font-script font-normal text-script text-3xl md:text-[2.5rem] text-center mb-8 tracking-wide">
             {t("countdown.title")}
@@ -109,7 +111,7 @@ export default async function HomePage({
           <BotanicalDivider />
 
           {/* Venue Section */}
-          <section id="venue" className="py-14 md:py-20 scroll-mt-24">
+          <section id="mapa" className="py-14 md:py-20 scroll-mt-24">
             <VenueSection
               title={t("venue.title")}
               venueName={wedding.event.venue.name}
@@ -129,7 +131,7 @@ export default async function HomePage({
         <>
           <BotanicalDivider />
 
-          <section className="py-14 md:py-20">
+          <section id="informacoes" className="py-14 md:py-20 scroll-mt-24">
             <div className="max-w-[1024px] mx-auto px-6 md:px-12">
               <h2 className="font-script font-normal text-script text-3xl md:text-[2.5rem] text-center mb-8 tracking-wide">
                 {t("info.title")}
@@ -167,7 +169,7 @@ export default async function HomePage({
           <BotanicalDivider />
 
           {/* Contact Section */}
-          <section className="py-14 md:py-20">
+          <section id="contato" className="py-14 md:py-20 scroll-mt-24">
             <ContactSection
               title={t("contact.title")}
               subtitle={t("contact.subtitle")}

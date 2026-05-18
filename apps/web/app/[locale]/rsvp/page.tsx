@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 
 import PublicLayout from "@/components/public/PublicLayout";
@@ -41,6 +41,10 @@ export default async function RSVPFallbackPage({
 
   if (!wedding.features.rsvpEnabled) {
     notFound();
+  }
+
+  if (wedding.features.rsvpExternalUrl) {
+    redirect(wedding.features.rsvpExternalUrl);
   }
 
   return (

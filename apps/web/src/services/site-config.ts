@@ -19,6 +19,7 @@ const SITE_CONFIG_KEYS = {
   stripeEnabled: "stripe_enabled",
   pixEnabled: "pix_enabled",
   rsvpEnabled: "rsvp_enabled",
+  rsvpExternalUrl: "rsvp_external_url",
   giftsEnabled: "gifts_enabled",
   galleryEnabled: "gallery_enabled",
   maxPlusOnes: "max_plus_ones",
@@ -52,6 +53,7 @@ export interface SiteSettings {
   stripeEnabled: boolean;
   pixEnabled: boolean;
   rsvpEnabled: boolean;
+  rsvpExternalUrl: string | null;
   giftsEnabled: boolean;
   galleryEnabled: boolean;
   maxPlusOnes: number;
@@ -68,6 +70,9 @@ export interface SiteSettings {
 }
 
 type SiteConfigRowMap = Map<string, string | null>;
+
+const DEFAULT_RSVP_EXTERNAL_URL = process.env.RSVP_EXTERNAL_URL?.trim() ||
+  staticConfig.features.rsvpExternalUrl;
 
 const DEFAULT_SETTINGS: SiteSettings = {
   coupleName1: staticConfig.event.couple[0],
@@ -87,6 +92,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   stripeEnabled: staticConfig.features.stripe.enabled,
   pixEnabled: staticConfig.features.pix.enabled,
   rsvpEnabled: staticConfig.features.rsvpEnabled,
+  rsvpExternalUrl: DEFAULT_RSVP_EXTERNAL_URL,
   giftsEnabled: staticConfig.features.giftsEnabled,
   galleryEnabled: staticConfig.features.galleryEnabled,
   maxPlusOnes: staticConfig.features.maxPlusOnes,
@@ -109,6 +115,7 @@ const PUBLIC_CONFIG_KEYS = [
   "stripe_enabled",
   "pix_enabled",
   "rsvp_enabled",
+  "rsvp_external_url",
   "gifts_enabled",
   "gallery_enabled",
   "max_plus_ones",
@@ -253,6 +260,11 @@ function toSiteSettings(rows: { key: string; value: string | null }[]): SiteSett
       readRaw(rowMap, SITE_CONFIG_KEYS.rsvpEnabled),
       DEFAULT_SETTINGS.rsvpEnabled
     ),
+    rsvpExternalUrl: readNullableString(
+      rowMap,
+      SITE_CONFIG_KEYS.rsvpExternalUrl,
+      DEFAULT_SETTINGS.rsvpExternalUrl
+    ),
     giftsEnabled: parseBoolean(
       readRaw(rowMap, SITE_CONFIG_KEYS.giftsEnabled),
       DEFAULT_SETTINGS.giftsEnabled
@@ -381,6 +393,11 @@ function toStoragePatch(
   if ("rsvpEnabled" in patch && patch.rsvpEnabled !== undefined) {
     entries[SITE_CONFIG_KEYS.rsvpEnabled] = patch.rsvpEnabled ? "true" : "false";
   }
+  if ("rsvpExternalUrl" in patch && patch.rsvpExternalUrl !== undefined) {
+    entries[SITE_CONFIG_KEYS.rsvpExternalUrl] = normalizeNullableString(
+      patch.rsvpExternalUrl
+    );
+  }
   if ("giftsEnabled" in patch && patch.giftsEnabled !== undefined) {
     entries[SITE_CONFIG_KEYS.giftsEnabled] = patch.giftsEnabled ? "true" : "false";
   }
@@ -485,6 +502,7 @@ export const siteConfigService = {
       },
       features: {
         rsvpEnabled: settings.rsvpEnabled,
+        rsvpExternalUrl: settings.rsvpExternalUrl,
         giftsEnabled: settings.giftsEnabled,
         galleryEnabled: settings.galleryEnabled,
         pix: { enabled: settings.pixEnabled },
@@ -509,6 +527,7 @@ export const siteConfigService = {
       stripe_enabled: settings.stripeEnabled ? "true" : "false",
       pix_enabled: settings.pixEnabled ? "true" : "false",
       rsvp_enabled: settings.rsvpEnabled ? "true" : "false",
+      rsvp_external_url: settings.rsvpExternalUrl,
       gifts_enabled: settings.giftsEnabled ? "true" : "false",
       gallery_enabled: settings.galleryEnabled ? "true" : "false",
       max_plus_ones: String(settings.maxPlusOnes),

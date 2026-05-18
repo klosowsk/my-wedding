@@ -5,12 +5,10 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { locales, type Locale } from "@/lib/i18n/routing";
-
-const BASE_NAV_LINKS = [
-  { key: "home" as const, href: "" },
-  { key: "gifts" as const, href: "/gifts" },
-  { key: "gallery" as const, href: "/gallery" },
-] as const;
+import {
+  getVisiblePublicNavLinks,
+  type PublicNavVisibility,
+} from "./navigation";
 
 const LOCALE_LABELS: Record<Locale, string> = {
   "pt-BR": "PT",
@@ -25,15 +23,13 @@ export default function Navbar({
 }: {
   className?: string;
   couple: readonly [string, string];
-  features: {
-    giftsEnabled: boolean;
-    galleryEnabled: boolean;
-  };
+  features: PublicNavVisibility;
 }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [currentHash, setCurrentHash] = useState("");
 
   // Detect current locale from pathname
   const currentLocale = (locales.find((l) => pathname.startsWith(`/${l}`)) ??
@@ -45,6 +41,14 @@ export default function Navbar({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const updateHash = () => setCurrentHash(window.location.hash);
+
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
 
   // Close menu on route change
   useEffect(() => {
@@ -63,24 +67,32 @@ export default function Navbar({
     };
   }, [menuOpen]);
 
-  const navLinks = BASE_NAV_LINKS.filter((link) => {
-    if (link.key === "gifts") return features.giftsEnabled;
-    if (link.key === "gallery") return features.galleryEnabled;
-    return true;
-  });
+  const navLinks = getVisiblePublicNavLinks(features);
 
   function isActive(href: string) {
     const fullPath = `${basePath}${href}`;
-    if (href === "") {
-      return pathname === basePath || pathname === `${basePath}/`;
+
+    if (href.startsWith("#")) {
+      return (
+        (pathname === basePath || pathname === `${basePath}/`) &&
+        currentHash === href
+      );
     }
+
+    if (href === "") {
+      return (
+        (pathname === basePath || pathname === `${basePath}/`) && !currentHash
+      );
+    }
+
     return pathname.startsWith(fullPath);
   }
 
   function switchLocale(locale: Locale) {
-    // Replace current locale prefix in the path
+    // Replace current locale prefix in the path and preserve any landing hash.
     const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, "");
-    window.location.href = `/${locale}${pathWithoutLocale || ""}`;
+    const hash = window.location.hash || "";
+    window.location.href = `/${locale}${pathWithoutLocale || ""}${hash}`;
   }
 
   const [first, second] = couple;
@@ -113,13 +125,13 @@ export default function Navbar({
           </Link>
 
           {/* Center/Right: nav links (desktop) */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.key}
                 href={`${basePath}${link.href}`}
                 className={[
-                  "font-body font-medium text-sm uppercase tracking-[0.1em] transition-colors duration-200",
+                  "font-body font-medium text-xs xl:text-sm uppercase tracking-[0.1em] transition-colors duration-200",
                   isActive(link.href)
                     ? "text-primary"
                     : "text-body hover:text-primary",
@@ -130,7 +142,7 @@ export default function Navbar({
             ))}
 
             {/* Language switcher (desktop) */}
-            <div className="flex items-center gap-1 ml-4 border-l border-secondary pl-4">
+            <div className="flex items-center gap-1 ml-2 xl:ml-4 border-l border-secondary pl-3 xl:pl-4">
               {locales.map((locale) => (
                 <button
                   key={locale}
@@ -148,10 +160,10 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Hamburger (mobile) */}
+          {/* Hamburger (mobile/tablet) */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer"
+            className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
@@ -179,7 +191,7 @@ export default function Navbar({
 
       {/* Mobile overlay menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-warm-white flex flex-col items-center justify-center gap-8 md:hidden">
+        <div className="fixed inset-0 z-40 bg-warm-white flex flex-col items-center justify-center gap-8 lg:hidden">
           {/* Close area above nav height */}
           <div className="absolute top-0 left-0 right-0 h-16" />
 
@@ -187,6 +199,7 @@ export default function Navbar({
             <Link
               key={link.key}
               href={`${basePath}${link.href}`}
+              onClick={() => setMenuOpen(false)}
               className={[
                 "font-body font-medium text-lg uppercase tracking-[0.15em] transition-colors duration-200",
                 isActive(link.href)
