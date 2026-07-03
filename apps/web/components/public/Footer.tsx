@@ -20,6 +20,7 @@ export default function Footer({
   features: {
     giftsEnabled: boolean;
     galleryEnabled: boolean;
+    galleryHasPhotos: boolean;
   };
 }) {
   const t = useTranslations("footer");
@@ -76,7 +77,7 @@ export default function Footer({
               {tNav("gifts")}
             </Link>
           )}
-          {features.galleryEnabled && (
+          {features.galleryEnabled && features.galleryHasPhotos && (
             <Link
               href={`${basePath}/gallery`}
               className="font-body text-sm text-muted hover:text-primary transition-colors duration-200"

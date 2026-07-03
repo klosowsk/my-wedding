@@ -88,6 +88,45 @@ export default async function HomePage({
 
       <BotanicalDivider />
 
+      {/* Info Cards Section (moved above the countdown) */}
+      {infoPages.length > 0 && (
+        <>
+          <section id="informacoes" className="py-14 md:py-20 scroll-mt-24">
+            <div className="max-w-[1024px] mx-auto px-6 md:px-12">
+              <div className="text-center mb-8">
+                <SectionTitle>{t("info.title")}</SectionTitle>
+                <div className="w-16 h-px bg-secondary mx-auto mt-4" />
+              </div>
+              <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+                {infoPages.map((page) => (
+                  <Link
+                    key={page.id}
+                    href={`/${locale}/info/${page.slug}`}
+                    className="no-underline basis-full md:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)]"
+                  >
+                    <Card hover className="h-full text-center p-6">
+                      {page.icon && (
+                        <span
+                          className="w-14 h-14 rounded-full bg-surface flex items-center justify-center mx-auto mb-4 text-2xl"
+                          aria-hidden="true"
+                        >
+                          {page.icon}
+                        </span>
+                      )}
+                      <h3 className="text-heading text-base font-semibold">
+                        {page.title}
+                      </h3>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <BotanicalDivider />
+        </>
+      )}
+
       {/* Countdown Section */}
       <section id="countdown" className="py-14 md:py-20 scroll-mt-24">
         <div className="max-w-[1024px] mx-auto px-6 md:px-12">
@@ -121,45 +160,6 @@ export default async function HomePage({
         </>
       )}
 
-      {/* Info Cards Section */}
-      {infoPages.length > 0 && (
-        <>
-          <BotanicalDivider />
-
-          <section id="informacoes" className="py-14 md:py-20 scroll-mt-24">
-            <div className="max-w-[1024px] mx-auto px-6 md:px-12">
-              <div className="text-center mb-8">
-                <SectionTitle>{t("info.title")}</SectionTitle>
-                <div className="w-16 h-px bg-secondary mx-auto mt-4" />
-              </div>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-                {infoPages.map((page) => (
-                  <Link
-                    key={page.id}
-                    href={`/${locale}/info/${page.slug}`}
-                    className="no-underline basis-full md:basis-[calc(50%-0.75rem)] lg:basis-[calc(33.333%-1rem)]"
-                  >
-                    <Card hover className="h-full text-center p-6">
-                      {page.icon && (
-                        <span
-                          className="w-14 h-14 rounded-full bg-surface flex items-center justify-center mx-auto mb-4 text-2xl"
-                          aria-hidden="true"
-                        >
-                          {page.icon}
-                        </span>
-                      )}
-                      <h3 className="text-heading text-base font-semibold">
-                        {page.title}
-                      </h3>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        </>
-      )}
-
       {hasContactInfo && (
         <>
           <BotanicalDivider />
@@ -171,6 +171,7 @@ export default async function HomePage({
               subtitle={t("contact.subtitle")}
               phone={wedding.event.contact.phone}
               email={wedding.event.contact.email}
+              whatsappMessage={t("contact.whatsapp")}
             />
           </section>
         </>

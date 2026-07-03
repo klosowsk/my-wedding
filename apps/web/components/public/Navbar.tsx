@@ -28,6 +28,7 @@ export default function Navbar({
   features: {
     giftsEnabled: boolean;
     galleryEnabled: boolean;
+    galleryHasPhotos: boolean;
   };
 }) {
   const t = useTranslations("nav");
@@ -66,7 +67,8 @@ export default function Navbar({
 
   const navLinks = BASE_NAV_LINKS.filter((link) => {
     if (link.key === "gifts") return features.giftsEnabled;
-    if (link.key === "gallery") return features.galleryEnabled;
+    if (link.key === "gallery")
+      return features.galleryEnabled && features.galleryHasPhotos;
     return true;
   });
 
