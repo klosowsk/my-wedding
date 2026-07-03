@@ -50,18 +50,18 @@ export default function Hero({
         .filter(Boolean)
         .join(" ")}
     >
-      {/* Watercolor florals from the physical invite — diagonal corners */}
+      {/* Botanical SVG corners — sage/olive, matching the invite foliage */}
       <img
-        src="/assets/florals/bouquet.webp"
+        src="/assets/vectors/leaves-top-left.svg"
         alt=""
         aria-hidden="true"
-        className="absolute -top-14 -left-14 w-44 md:-top-20 md:-left-20 md:w-72 lg:w-80 opacity-90 pointer-events-none select-none animate-sway"
+        className="hidden md:block absolute top-0 left-0 w-52 lg:w-64 xl:w-80 opacity-40 pointer-events-none select-none animate-sway"
       />
       <img
-        src="/assets/florals/bouquet.webp"
+        src="/assets/vectors/leaves-bottom-right.svg"
         alt=""
         aria-hidden="true"
-        className="absolute -bottom-14 -right-14 w-40 md:-bottom-20 md:-right-20 md:w-64 lg:w-72 rotate-180 opacity-90 pointer-events-none select-none"
+        className="hidden md:block absolute bottom-0 right-0 w-48 lg:w-60 xl:w-72 opacity-40 pointer-events-none select-none"
       />
 
       {/* Content with corner frame — staged entrance, mirroring the invite */}
