@@ -55,7 +55,7 @@ export default function Hero({
         src="/assets/vectors/leaves-top-left.svg"
         alt=""
         aria-hidden="true"
-        className="hidden md:block absolute top-0 left-0 w-64 lg:w-80 xl:w-96 opacity-60 pointer-events-none select-none animate-sway"
+        className="hidden md:block absolute top-18 left-0 w-64 lg:w-80 xl:w-96 opacity-60 pointer-events-none select-none animate-sway"
       />
       <img
         src="/assets/vectors/leaves-bottom-right.svg"
