@@ -20,6 +20,12 @@ export async function createCheckoutSession(params: {
 
   return stripe.checkout.sessions.create({
     mode: "payment",
+    // Brazilian card installments (parcelamento). The API only toggles it on;
+    // the plans offered (e.g. cap at 10x) and per-plan minimums are configured
+    // in the Stripe Dashboard → Payment methods → Card → Installments.
+    payment_method_options: {
+      card: { installments: { enabled: true } },
+    },
     line_items: [
       {
         price_data: {
