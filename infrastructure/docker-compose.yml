@@ -3,7 +3,7 @@ services:
     image: postgres:16
     container_name: marriage-db
     ports:
-      - "5435:5432"
+      - "38543:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

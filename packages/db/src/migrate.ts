@@ -4,7 +4,7 @@ import postgres from "postgres";
 
 const connectionString =
   process.env.DATABASE_URL ??
-  "postgresql://postgres:postgres@localhost:5435/marriage";
+  "postgresql://postgres:postgres@localhost:38543/marriage";
 
 const client = postgres(connectionString, { max: 1 });
 const db = drizzle(client);
