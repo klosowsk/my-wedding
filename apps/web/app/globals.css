@@ -41,37 +41,41 @@
    Full token map per docs/UI_RULES.md
    ============================================================ */
 
+/* Official invite palette: terracota claro #D6B49A (base), terracota suave
+   #C98663 (acento/detalhes), cinza claro quente #D1D3D2, verde oliva #7A8364
+   (folhagens), off-white #F5F1E8. Interactive primary keeps a deepened shade
+   of the terracota suave for button-text contrast. */
 :root {
-  /* === Primary (Terracotta) === */
+  /* === Primary (Terracotta — deep shade of #C98663 for contrast) === */
   --color-primary: #B46942;
   --color-primary-hover: #9D5B39;
   --color-primary-active: #8A4F31;
-  --color-primary-light: #C88A6A;
-  --color-primary-faint: #F0DDD2;
+  --color-primary-light: #C98663;
+  --color-primary-faint: #F3E3D8;
 
   /* === Script (Olive Green — calligraphy, matches the physical invite) === */
   --color-script: #7A8364;
 
-  /* === Secondary (Sand) === */
-  --color-secondary: #D3BFA6;
-  --color-secondary-light: #E2D5C3;
-  --color-secondary-dark: #BCA88E;
+  /* === Secondary (Champagne / terracota claro) === */
+  --color-secondary: #D6B49A;
+  --color-secondary-light: #E6D6C6;
+  --color-secondary-dark: #C09877;
 
-  /* === Accent (Olive) === */
-  --color-accent: #6F714A;
-  --color-accent-light: #8A8C66;
-  --color-accent-faint: #E8E9D8;
+  /* === Accent (Verde oliva) === */
+  --color-accent: #7A8364;
+  --color-accent-light: #97A085;
+  --color-accent-faint: #EAECE2;
 
   /* === Neutral (Warm Gray) === */
   --color-muted: #9A9287;
   --color-muted-light: #B5AFA7;
   --color-muted-dark: #7A746B;
 
-  /* === Surfaces === */
-  --color-surface: #ECE9D8;
-  --color-surface-hover: #E4E0CE;
-  --color-background: #F7F4EE;
-  --color-warm-white: #FFFDF9;
+  /* === Surfaces (from the invite off-white) === */
+  --color-surface: #EFE8DC;
+  --color-surface-hover: #E8DFCE;
+  --color-background: #F5F1E8;
+  --color-warm-white: #FBF8F2;
 
   /* === Text === */
   --color-text: #3C3530;
@@ -81,13 +85,13 @@
   --color-text-on-primary: #FFFDF9;
 
   /* === Borders === */
-  --color-border: #D3BFA6;
-  --color-border-light: #ECE9D8;
+  --color-border: #D6B49A;
+  --color-border-light: #EFE8DC;
   --color-border-focus: #B46942;
 
   /* === Semantic === */
-  --color-success: #6F714A;
-  --color-success-bg: #E8E9D8;
+  --color-success: #7A8364;
+  --color-success-bg: #EAECE2;
   --color-error: #C44536;
   --color-error-bg: #F5E0DD;
   --color-warning: #D4A843;

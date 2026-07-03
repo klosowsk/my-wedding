@@ -23,13 +23,13 @@ Do not hardcode hex in components.
 
 Key tokens:
 
-- Primary action: `primary` (`#B46942`)
+- Primary action: `primary` (`#B46942` — deep shade of the invite's terracota suave `#C98663`)
 - Hover action: `primary-hover`
-- Accent/success: `accent` (`#6F714A`)
-- Surface: `surface` (`#ECE9D8`)
-- Backgrounds: `background`, `warm-white`
+- Accent/success: `accent` (`#7A8364` — invite verde oliva)
+- Surface: `surface` (`#EFE8DC`)
+- Backgrounds: `background` (`#F5F1E8` — invite off-white), `warm-white`
 - Text: `body`, `heading`, `text-muted`
-- Decorative script color: `script` (`#1B3A6B`)
+- Decorative script color: `script` (`#7A8364` — olive calligraphy, like the invite)
 
 Rules:
 
