@@ -32,6 +32,24 @@ export function formatEventDate(
 }
 
 /**
+ * Localized pieces of a date-only ISO string, for the invite-style
+ * date block (weekday | big day | month arch | year).
+ */
+export function getEventDateParts(isoDate: string, locale: string) {
+  const date = new Date(`${isoDate}T12:00:00`);
+  const intl = intlLocaleFor(locale);
+  const part = (options: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(intl, options).format(date);
+
+  return {
+    weekday: part({ weekday: "long" }),
+    day: part({ day: "2-digit" }),
+    month: part({ month: "long" }),
+    year: part({ year: "numeric" }),
+  };
+}
+
+/**
  * RSVP deadline is a date-only string (YYYY-MM-DD); it passes at the end of
  * that day in America/Sao_Paulo (fixed -03:00 — Brazil has no DST since 2019).
  */

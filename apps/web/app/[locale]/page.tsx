@@ -13,7 +13,7 @@ import ContactSection from "@/components/public/ContactSection";
 import BotanicalDivider from "@/components/public/BotanicalDivider";
 import SectionTitle from "@/components/public/SectionTitle";
 import { Card } from "@/components/ui/Card";
-import { formatEventDate } from "@/lib/dates";
+import { formatEventDate, getEventDateParts } from "@/lib/dates";
 
 export async function generateMetadata({
   params,
@@ -55,7 +55,7 @@ export default async function HomePage({
         : wedding.copy.heroSubtitlePt;
   const heroSubtitle = customSubtitle?.trim() || t("hero.subtitle");
 
-  const heroDate = `${formatEventDate(wedding.event.date, locale)} • ${wedding.event.time}`;
+  const heroDateParts = getEventDateParts(wedding.event.date, locale);
 
   const hasGiftsEntry = wedding.features.giftsEnabled && publicGifts.length > 0;
   const hasVenueEntry =
@@ -74,8 +74,11 @@ export default async function HomePage({
       {/* Hero Section */}
       <Hero
         id="inicio"
+        eyebrow={t("hero.eyebrow")}
         subtitle={heroSubtitle}
-        date={heroDate}
+        joiner={t("common.and")}
+        dateParts={heroDateParts}
+        timeLabel={t("hero.timeAt", { time: wedding.event.time })}
         venue={wedding.event.venue.name}
         cta={wedding.features.rsvpEnabled ? t("hero.cta") : undefined}
         couple={wedding.event.couple}

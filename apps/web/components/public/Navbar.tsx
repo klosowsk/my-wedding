@@ -31,6 +31,7 @@ export default function Navbar({
   };
 }) {
   const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -105,10 +106,10 @@ export default function Navbar({
             className="font-script text-script text-2xl md:text-3xl tracking-wide leading-none hover:no-underline"
           >
             <span className="md:hidden">
-              {first[0]} <span className="text-primary">&</span> {second[0]}
+              {first[0]} {tCommon("and")} {second[0]}
             </span>
             <span className="hidden md:inline">
-              {first} <span className="text-primary">&</span> {second}
+              {first} {tCommon("and")} {second}
             </span>
           </Link>
 

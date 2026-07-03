@@ -24,6 +24,7 @@ export default function Footer({
 }) {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const pathname = usePathname();
   const [first, second] = couple;
 
@@ -51,7 +52,7 @@ export default function Footer({
       <div className="mx-auto max-w-[1280px] px-6 md:px-12">
         {/* Couple names */}
         <p className="font-script text-primary text-2xl md:text-3xl tracking-wide text-center mb-2">
-          {first} & {second}
+          {first} {tCommon("and")} {second}
         </p>
 
         {/* Date & Venue */}

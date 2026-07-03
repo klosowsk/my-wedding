@@ -7,7 +7,9 @@
     "closeMenu": "Fechar menu"
   },
   "hero": {
-    "subtitle": "convidam você para celebrar, com amor, o início de sua história como um só",
+    "eyebrow": "Junto de suas famílias,",
+    "subtitle": "convidam você para celebrar, com amor, o início de suas histórias como uma só",
+    "timeAt": "às {time}h",
     "cta": "Confirmar Presença"
   },
   "countdown": {
@@ -118,6 +120,7 @@
     "loading": "Carregando...",
     "error": "Algo deu errado. Tente novamente?",
     "close": "Fechar",
-    "back": "Voltar"
+    "back": "Voltar",
+    "and": "e"
   }
 }

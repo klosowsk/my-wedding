@@ -7,7 +7,9 @@
     "closeMenu": "Close menu"
   },
   "hero": {
-    "subtitle": "invite you to celebrate, with love, the beginning of their story as one",
+    "eyebrow": "Together with their families,",
+    "subtitle": "invite you to celebrate, with love, the beginning of their stories as one",
+    "timeAt": "at {time}",
     "cta": "RSVP"
   },
   "countdown": {
@@ -118,6 +120,7 @@
     "loading": "Loading...",
     "error": "Something went wrong. Try again?",
     "close": "Close",
-    "back": "Back"
+    "back": "Back",
+    "and": "&"
   }
 }

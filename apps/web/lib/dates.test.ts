@@ -1,5 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { formatEventDate, intlLocaleFor, isRsvpDeadlinePassed } from "./dates";
+import {
+  formatEventDate,
+  getEventDateParts,
+  intlLocaleFor,
+  isRsvpDeadlinePassed,
+} from "./dates";
 
 describe("intlLocaleFor", () => {
   test("maps supported locales", () => {
@@ -23,6 +28,26 @@ describe("formatEventDate", () => {
   test("short style uses locale ordering", () => {
     expect(formatEventDate("2026-12-31", "pt-BR", "short")).toBe("31/12/2026");
     expect(formatEventDate("2026-12-31", "en", "short")).toBe("12/31/2026");
+  });
+});
+
+describe("getEventDateParts", () => {
+  test("localized parts for the invite date block (pt-BR)", () => {
+    expect(getEventDateParts("2026-11-07", "pt-BR")).toEqual({
+      weekday: "sábado",
+      day: "07",
+      month: "novembro",
+      year: "2026",
+    });
+  });
+
+  test("localized parts in English", () => {
+    expect(getEventDateParts("2026-11-07", "en")).toEqual({
+      weekday: "Saturday",
+      day: "07",
+      month: "November",
+      year: "2026",
+    });
   });
 });
 
