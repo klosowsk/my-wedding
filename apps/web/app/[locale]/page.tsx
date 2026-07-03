@@ -11,7 +11,9 @@ import Countdown from "@/components/public/Countdown";
 import VenueSection from "@/components/public/VenueSection";
 import ContactSection from "@/components/public/ContactSection";
 import BotanicalDivider from "@/components/public/BotanicalDivider";
+import SectionTitle from "@/components/public/SectionTitle";
 import { Card } from "@/components/ui/Card";
+import { formatEventDate } from "@/lib/dates";
 
 export async function generateMetadata({
   params,
@@ -22,12 +24,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale });
   const wedding = await siteConfigService.getWeddingConfig();
   const [name1, name2] = wedding.event.couple;
-  const localeForDate = locale === "en" ? "en-US" : locale === "es" ? "es-ES" : "pt-BR";
-  const dateLabel = new Intl.DateTimeFormat(localeForDate, {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(`${wedding.event.date}T12:00:00`));
+  const dateLabel = formatEventDate(wedding.event.date, locale);
 
   return {
     title: `${name1} & ${name2} — ${dateLabel}`,
@@ -58,13 +55,7 @@ export default async function HomePage({
         : wedding.copy.heroSubtitlePt;
   const heroSubtitle = customSubtitle?.trim() || t("hero.subtitle");
 
-  const localeForDate = locale === "en" ? "en-US" : locale === "es" ? "es-ES" : "pt-BR";
-  const dateLabel = new Intl.DateTimeFormat(localeForDate, {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(`${wedding.event.date}T12:00:00`));
-  const heroDate = `${dateLabel} • ${wedding.event.time}`;
+  const heroDate = `${formatEventDate(wedding.event.date, locale)} • ${wedding.event.time}`;
 
   const hasGiftsEntry = wedding.features.giftsEnabled && publicGifts.length > 0;
   const hasVenueEntry =
@@ -97,9 +88,10 @@ export default async function HomePage({
       {/* Countdown Section */}
       <section id="countdown" className="py-14 md:py-20 scroll-mt-24">
         <div className="max-w-[1024px] mx-auto px-6 md:px-12">
-          <h2 className="font-script font-normal text-script text-3xl md:text-[2.5rem] text-center mb-8 tracking-wide">
-            {t("countdown.title")}
-          </h2>
+          <div className="text-center mb-8">
+            <SectionTitle>{t("countdown.title")}</SectionTitle>
+            <div className="w-16 h-px bg-secondary mx-auto mt-4" />
+          </div>
           <Countdown
             targetDateTime={`${wedding.event.date}T${wedding.event.time}:00`}
           />
@@ -133,9 +125,10 @@ export default async function HomePage({
 
           <section id="informacoes" className="py-14 md:py-20 scroll-mt-24">
             <div className="max-w-[1024px] mx-auto px-6 md:px-12">
-              <h2 className="font-script font-normal text-script text-3xl md:text-[2.5rem] text-center mb-8 tracking-wide">
-                {t("info.title")}
-              </h2>
+              <div className="text-center mb-8">
+                <SectionTitle>{t("info.title")}</SectionTitle>
+                <div className="w-16 h-px bg-secondary mx-auto mt-4" />
+              </div>
               <div className="flex flex-wrap justify-center gap-4 md:gap-6">
                 {infoPages.map((page) => (
                   <Link
@@ -146,7 +139,7 @@ export default async function HomePage({
                     <Card hover className="h-full text-center p-6">
                       {page.icon && (
                         <span
-                          className="text-3xl mb-3 block"
+                          className="w-14 h-14 rounded-full bg-surface flex items-center justify-center mx-auto mb-4 text-2xl"
                           aria-hidden="true"
                         >
                           {page.icon}

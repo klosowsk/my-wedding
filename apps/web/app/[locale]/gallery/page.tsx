@@ -6,6 +6,7 @@ import { galleryService } from "@/src/services/gallery";
 import { siteConfigService } from "@/src/services/site-config";
 import PublicLayout from "@/components/public/PublicLayout";
 import PhotoGrid from "@/components/public/PhotoGrid";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export async function generateMetadata({
   params,
@@ -73,17 +74,21 @@ export default async function GalleryPage({
           </div>
 
           {/* Photo Grid */}
-          <PhotoGrid
-            photos={photos}
-            labels={{
-              close: t("lightbox.close"),
-              previous: t("lightbox.previous"),
-              next: t("lightbox.next"),
-              zoomIn: t("lightbox.zoomIn"),
-              zoomOut: t("lightbox.zoomOut"),
-              resetZoom: t("lightbox.resetZoom"),
-            }}
-          />
+          {photos.length === 0 ? (
+            <EmptyState message={t("empty")} className="max-w-[500px] mx-auto" />
+          ) : (
+            <PhotoGrid
+              photos={photos}
+              labels={{
+                close: t("lightbox.close"),
+                previous: t("lightbox.previous"),
+                next: t("lightbox.next"),
+                zoomIn: t("lightbox.zoomIn"),
+                zoomOut: t("lightbox.zoomOut"),
+                resetZoom: t("lightbox.resetZoom"),
+              }}
+            />
+          )}
         </div>
       </section>
 

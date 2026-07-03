@@ -105,10 +105,10 @@ export default function Navbar({
             className="font-script text-script text-2xl md:text-3xl tracking-wide leading-none hover:no-underline"
           >
             <span className="md:hidden">
-              {first[0]} & {second[0]}
+              {first[0]} <span className="text-primary">&</span> {second[0]}
             </span>
             <span className="hidden md:inline">
-              {first} & {second}
+              {first} <span className="text-primary">&</span> {second}
             </span>
           </Link>
 
@@ -152,7 +152,7 @@ export default function Navbar({
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
             aria-expanded={menuOpen}
           >
             <span

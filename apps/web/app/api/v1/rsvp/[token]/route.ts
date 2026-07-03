@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { guestService } from "@/src/services/guest";
+import { siteConfigService } from "@/src/services/site-config";
 import { rsvpConfirmSchema } from "@marriage/shared/validators";
+import { isRsvpDeadlinePassed } from "@/lib/dates";
 
 export async function GET(
   _request: NextRequest,
@@ -40,6 +42,16 @@ export async function POST(
       return NextResponse.json(
         { message: "Invalid request body", errors: parsed.error.flatten() },
         { status: 400 }
+      );
+    }
+
+    // Defense in depth: the page hides the form past the deadline, but a
+    // stale tab could still submit.
+    const settings = await siteConfigService.getSettings();
+    if (isRsvpDeadlinePassed(settings.rsvpDeadline)) {
+      return NextResponse.json(
+        { message: "RSVP deadline has passed" },
+        { status: 403 }
       );
     }
 

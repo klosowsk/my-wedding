@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const result = await paymentService.createStripeSession(
       giftId,
       amountCents,
-      contributorName ?? "Anonymous",
+      contributorName?.trim() ?? "",
       successUrl,
       cancelUrl,
       quoteQuantity

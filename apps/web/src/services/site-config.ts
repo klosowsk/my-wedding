@@ -503,6 +503,7 @@ export const siteConfigService = {
       features: {
         rsvpEnabled: settings.rsvpEnabled,
         rsvpExternalUrl: settings.rsvpExternalUrl,
+        rsvpDeadline: settings.rsvpDeadline,
         giftsEnabled: settings.giftsEnabled,
         galleryEnabled: settings.galleryEnabled,
         pix: { enabled: settings.pixEnabled },

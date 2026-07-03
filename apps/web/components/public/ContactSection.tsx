@@ -20,11 +20,12 @@ export default function ContactSection({
     <div className={className}>
       <div className="mx-auto max-w-[768px] px-6 md:px-12 text-center">
         {/* Heading */}
-        <SectionTitle className="mb-2">{title}</SectionTitle>
+        <SectionTitle className="mb-3">{title}</SectionTitle>
 
-        <p className="font-body text-muted text-sm md:text-base mb-6">
+        <p className="font-body text-muted text-sm md:text-base mb-4">
           {subtitle}
         </p>
+        <div className="w-16 h-px bg-secondary mx-auto mb-6" />
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
           {/* Phone */}

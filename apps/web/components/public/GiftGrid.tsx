@@ -20,12 +20,6 @@ interface Gift {
 
 interface GiftGridProps {
   gifts: Gift[];
-  contributeLabel: string;
-  fundedLabel: string;
-  progressLabel: string;
-  collectedLabel: string;
-  goalLabel: string;
-  quoteUnitLabel: string;
   currency?: {
     code: string;
     locale: string;
@@ -36,12 +30,6 @@ interface GiftGridProps {
 
 export default function GiftGrid({
   gifts,
-  contributeLabel,
-  fundedLabel,
-  progressLabel,
-  collectedLabel,
-  goalLabel,
-  quoteUnitLabel,
   currency,
   onContribute,
   className = "",
@@ -63,12 +51,6 @@ export default function GiftGrid({
         <GiftCard
           key={gift.id}
           gift={gift}
-          contributeLabel={contributeLabel}
-          fundedLabel={fundedLabel}
-          progressLabel={progressLabel}
-          collectedLabel={collectedLabel}
-          goalLabel={goalLabel}
-          quoteUnitLabel={quoteUnitLabel}
           currency={currency}
           onContribute={onContribute}
         />

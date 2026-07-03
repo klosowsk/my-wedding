@@ -9,7 +9,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { StatusIcon } from "@/components/ui/StatusIcon";
 import PixQRCode from "./PixQRCode";
 import { apiGet, apiPost } from "@/lib/api";
-import { formatCurrency, getCurrencySymbol } from "@marriage/shared";
+import { formatCurrency, formatCurrencyAmount, getCurrencySymbol } from "@marriage/shared";
 
 interface Gift {
   id: string;
@@ -58,29 +58,6 @@ export default function PaymentModal({
   const t = useTranslations("payment");
   const tCommon = useTranslations("common");
 
-  const rawQuoteUnitLabel = t("quoteUnit");
-  const rawQuoteQuantityLabel = t("quoteQuantity");
-  const rawQuoteTotalLabel = t("quoteTotal");
-  const rawQuoteHintLabel = t("quoteHint");
-
-  const quoteUnitLabel =
-    rawQuoteUnitLabel === "quoteUnit" || rawQuoteUnitLabel === "payment.quoteUnit"
-      ? "Cota"
-      : rawQuoteUnitLabel;
-  const quoteQuantityLabel =
-    rawQuoteQuantityLabel === "quoteQuantity" ||
-    rawQuoteQuantityLabel === "payment.quoteQuantity"
-      ? "Quantidade"
-      : rawQuoteQuantityLabel;
-  const quoteTotalLabel =
-    rawQuoteTotalLabel === "quoteTotal" || rawQuoteTotalLabel === "payment.quoteTotal"
-      ? "Total"
-      : rawQuoteTotalLabel;
-  const quoteHintLabel =
-    rawQuoteHintLabel === "quoteHint" || rawQuoteHintLabel === "payment.quoteHint"
-      ? "Escolha quantas cotas deseja oferecer"
-      : rawQuoteHintLabel;
-
   const remaining = Math.max(gift.priceCents - gift.collectedCents, 0);
   const hasFixedOptions =
     gift.contributionMode === "fixed" && gift.fixedContributionOptions.length > 0;
@@ -100,15 +77,21 @@ export default function PaymentModal({
   const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null);
   const [configLoading, setConfigLoading] = useState(true);
 
+  const currencyOptions = {
+    code: currency?.code || siteConfig?.currency_code || undefined,
+    locale: currency?.locale || siteConfig?.currency_locale || undefined,
+  };
+
   // Form state
   const [amountCents, setAmountCents] = useState(defaultAmount);
-  const [amountInput, setAmountInput] = useState((defaultAmount / 100).toFixed(2));
+  const [amountInput, setAmountInput] = useState(() =>
+    formatCurrencyAmount(defaultAmount, currencyOptions)
+  );
   const [quoteQuantity, setQuoteQuantity] = useState(defaultQuoteQuantity);
   const [contributorName, setContributorName] = useState("");
   const [activeTab, setActiveTab] = useState("pix");
   const [step, setStep] = useState<PaymentStep>("form");
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
   // Fetch site config on open
   useEffect(() => {
@@ -140,12 +123,11 @@ export default function PaymentModal({
   useEffect(() => {
     if (open) {
       setAmountCents(defaultAmount);
-      setAmountInput((defaultAmount / 100).toFixed(2));
+      setAmountInput(formatCurrencyAmount(defaultAmount, currencyOptions));
       setQuoteQuantity(defaultQuoteQuantity);
       setContributorName("");
       setStep("form");
       setLoading(false);
-      setErrorMsg("");
     }
   }, [open, defaultAmount]);
 
@@ -153,28 +135,19 @@ export default function PaymentModal({
     siteConfig?.pix_enabled !== "false" && !!siteConfig?.pix_key;
   const stripeAvailable = siteConfig?.stripe_enabled === "true";
 
-  const currencyOptions = {
-    code: currency?.code || siteConfig?.currency_code || undefined,
-    locale: currency?.locale || siteConfig?.currency_locale || undefined,
-  };
-
   const currencySymbol = getCurrencySymbol(currencyOptions);
 
   const tabs = [];
   if (pixAvailable) tabs.push({ id: "pix", label: t("pix") });
   if (stripeAvailable) tabs.push({ id: "stripe", label: t("stripe") });
 
+  // Bank-app style mask: the typed digits are centavos, display is derived.
+  // Typing "5000" shows "50,00"; pasting "1.234,56" keeps "1.234,56".
   const handleAmountChange = (value: string) => {
-    const filtered = value.replace(/[^\d.,]/g, "");
-    setAmountInput(filtered);
-
-    const cleaned = filtered.replace(",", ".");
-    const parsed = parseFloat(cleaned);
-    if (!isNaN(parsed) && parsed > 0) {
-      setAmountCents(Math.round(parsed * 100));
-    } else {
-      setAmountCents(0);
-    }
+    const digits = value.replace(/\D/g, "").slice(0, 9);
+    const cents = digits ? parseInt(digits, 10) : 0;
+    setAmountCents(cents);
+    setAmountInput(cents ? formatCurrencyAmount(cents, currencyOptions) : "");
   };
 
   const setQuoteAmount = (quantity: number) => {
@@ -188,47 +161,45 @@ export default function PaymentModal({
   const handlePixSubmit = useCallback(async () => {
     if (amountCents < 100) return;
     setLoading(true);
-    setErrorMsg("");
 
     try {
       await apiPost("/api/v1/payments/pix", {
         giftId: gift.id,
         amountCents,
         quoteQuantity: isQuotesMode ? quoteQuantity : undefined,
-        contributorName: contributorName || undefined,
+        contributorName: contributorName.trim() || undefined,
         paymentMethod: "pix",
       });
       setStep("success");
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : tCommon("error"));
+      console.error(err);
       setStep("error");
     } finally {
       setLoading(false);
     }
-  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName, tCommon]);
+  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName]);
 
   const handleStripeSubmit = useCallback(async () => {
     if (amountCents < 100) return;
     setLoading(true);
-    setErrorMsg("");
 
     try {
       const result = await apiPost<{ url: string }>("/api/v1/payments/stripe", {
         giftId: gift.id,
         amountCents,
         quoteQuantity: isQuotesMode ? quoteQuantity : undefined,
-        contributorName: contributorName || "Anonymous",
+        contributorName: contributorName.trim(),
         paymentMethod: "stripe",
         locale,
       });
 
       window.location.href = result.url;
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : tCommon("error"));
+      console.error(err);
       setStep("error");
       setLoading(false);
     }
-  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName, locale, tCommon]);
+  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName, locale]);
 
   const generateTxId = () => {
     return `PIX${gift.id.replace(/-/g, "").substring(0, 8)}${Date.now().toString(36)}`.substring(0, 25);
@@ -257,14 +228,11 @@ export default function PaymentModal({
       ) : step === "error" ? (
         <div className="text-center py-6">
           <StatusIcon variant="error" className="mb-4" />
-          <p className="text-error font-semibold mb-2">{errorMsg}</p>
+          <p className="text-error font-semibold mb-2">{t("errorMessage")}</p>
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => {
-              setStep("form");
-              setErrorMsg("");
-            }}
+            onClick={() => setStep("form")}
             className="mt-4"
           >
             {tCommon("back")}
@@ -325,7 +293,7 @@ export default function PaymentModal({
             </label>
             {isQuotesMode ? (
               <div className="space-y-3">
-                <p className="text-xs text-muted">{quoteHintLabel}</p>
+                <p className="text-xs text-muted">{t("quoteHint")}</p>
 
                 <div className="rounded-xl border border-secondary bg-surface/60 p-3">
                   <div className="flex items-center justify-center gap-3">
@@ -342,7 +310,7 @@ export default function PaymentModal({
 
                     <div className="min-w-20 rounded-lg border border-secondary bg-warm-white px-4 py-2 text-center">
                       <p className="text-[10px] uppercase tracking-wide text-muted font-semibold">
-                        {quoteQuantityLabel}
+                        {t("quoteQuantity")}
                       </p>
                       <p className="text-lg font-bold text-heading leading-tight">
                         {quoteQuantity}
@@ -378,7 +346,7 @@ export default function PaymentModal({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div className="rounded-lg border border-secondary bg-surface/60 px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-muted font-semibold">
-                      {quoteUnitLabel}
+                      {t("quoteUnit")}
                     </p>
                     <p className="text-sm font-semibold text-heading">
                       {formatCurrency(gift.quoteUnitCents ?? 0, currencyOptions)}
@@ -386,13 +354,13 @@ export default function PaymentModal({
                   </div>
                   <div className="rounded-lg border border-secondary bg-surface/60 px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-muted font-semibold">
-                      {quoteQuantityLabel}
+                      {t("quoteQuantity")}
                     </p>
                     <p className="text-sm font-semibold text-heading">{quoteQuantity}x</p>
                   </div>
                   <div className="rounded-lg border border-primary/40 bg-primary-faint px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-muted font-semibold">
-                      {quoteTotalLabel}
+                      {t("quoteTotal")}
                     </p>
                     <p className="text-base font-bold text-heading">
                       {formatCurrency(amountCents, currencyOptions)}
@@ -402,7 +370,7 @@ export default function PaymentModal({
 
                 <div>
                   <label className="block text-xs font-medium text-muted mb-1">
-                    {quoteQuantityLabel}
+                    {t("quoteQuantity")}
                   </label>
                   <input
                     type="number"
@@ -424,7 +392,7 @@ export default function PaymentModal({
                     size="sm"
                     onClick={() => {
                       setAmountCents(option);
-                      setAmountInput((option / 100).toFixed(2));
+                      setAmountInput(formatCurrencyAmount(option, currencyOptions));
                     }}
                   >
                     {formatCurrency(option, currencyOptions)}
@@ -438,7 +406,7 @@ export default function PaymentModal({
                 </span>
                 <input
                   type="text"
-                  inputMode="decimal"
+                  inputMode="numeric"
                   value={amountInput}
                   onChange={(e) => handleAmountChange(e.target.value)}
                   className="w-full bg-surface border border-secondary rounded-lg pl-10 pr-4 py-2.5 text-sm text-body placeholder:text-muted-light focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-200"

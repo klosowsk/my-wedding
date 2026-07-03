@@ -23,12 +23,6 @@ interface Gift {
 
 interface GiftsWithPaymentProps {
   gifts: Gift[];
-  contributeLabel: string;
-  fundedLabel: string;
-  progressLabel: string;
-  collectedLabel: string;
-  goalLabel: string;
-  quoteUnitLabel: string;
   locale: string;
   currency: {
     code: string;
@@ -38,12 +32,6 @@ interface GiftsWithPaymentProps {
 
 export default function GiftsWithPayment({
   gifts,
-  contributeLabel,
-  fundedLabel,
-  progressLabel,
-  collectedLabel,
-  goalLabel,
-  quoteUnitLabel,
   locale,
   currency,
 }: GiftsWithPaymentProps) {
@@ -105,12 +93,6 @@ export default function GiftsWithPayment({
     <>
       <GiftGrid
         gifts={gifts}
-        contributeLabel={contributeLabel}
-        fundedLabel={fundedLabel}
-        progressLabel={progressLabel}
-        collectedLabel={collectedLabel}
-        goalLabel={goalLabel}
-        quoteUnitLabel={quoteUnitLabel}
         currency={currency}
         onContribute={handleContribute}
       />

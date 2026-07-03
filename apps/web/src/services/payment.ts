@@ -158,7 +158,7 @@ export const paymentService = {
       cancelUrl,
       metadata: {
         giftId,
-        contributorName,
+        ...(contributorName ? { contributorName } : {}),
       },
     });
 
@@ -183,7 +183,8 @@ export const paymentService = {
 
   /**
    * Handle Stripe webhook events.
-   * On checkout.session.completed: confirm the contribution and recalculate gift total.
+   * Confirms contributions on successful payment; marks them failed when the
+   * session expires or an async payment fails (never downgrades a confirmed one).
    */
   async handleStripeWebhook(payload: string, signature: string) {
     const event = stripeLib.constructWebhookEvent(payload, signature);
@@ -191,33 +192,58 @@ export const paymentService = {
       throw new Error("Invalid webhook event");
     }
 
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const stripeSessionId = session.id;
-
-      const contribution =
-        await giftContributionRepository.findByStripeSessionId(
-          stripeSessionId
-        );
-      if (!contribution) {
-        // Session not found — may not be from our app, skip silently
-        return;
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        // Card payments arrive already paid; async methods complete unpaid
+        // and confirm later via async_payment_succeeded.
+        if (session.payment_status === "paid") {
+          await confirmContributionBySession(session.id);
+        }
+        break;
       }
-
-      if (contribution.paymentStatus === "confirmed") {
-        // Already confirmed — idempotent, skip
-        return;
-      }
-
-      await giftContributionRepository.update(contribution.id, {
-        paymentStatus: "confirmed",
-        confirmedAt: new Date(),
-      });
-
-      await recalculateGiftCollected(contribution.giftId);
+      case "checkout.session.async_payment_succeeded":
+        await confirmContributionBySession(event.data.object.id);
+        break;
+      case "checkout.session.expired":
+      case "checkout.session.async_payment_failed":
+        await failContributionBySession(event.data.object.id);
+        break;
+      default:
+        // Not an event we care about — skip silently
+        break;
     }
   },
 };
+
+async function confirmContributionBySession(stripeSessionId: string) {
+  const contribution =
+    await giftContributionRepository.findByStripeSessionId(stripeSessionId);
+  // Missing session may not be from our app; confirmed is idempotent — skip
+  if (!contribution || contribution.paymentStatus === "confirmed") {
+    return;
+  }
+
+  await giftContributionRepository.update(contribution.id, {
+    paymentStatus: "confirmed",
+    confirmedAt: new Date(),
+  });
+
+  await recalculateGiftCollected(contribution.giftId);
+}
+
+async function failContributionBySession(stripeSessionId: string) {
+  const contribution =
+    await giftContributionRepository.findByStripeSessionId(stripeSessionId);
+  // Only pending contributions can fail — never downgrade confirmed/refunded
+  if (!contribution || contribution.paymentStatus !== "pending") {
+    return;
+  }
+
+  await giftContributionRepository.update(contribution.id, {
+    paymentStatus: "failed",
+  });
+}
 
 /**
  * Recalculate a gift's collected cents from all confirmed contributions.

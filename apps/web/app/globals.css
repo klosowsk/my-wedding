@@ -290,8 +290,10 @@ a:hover {
   50% { transform: rotate(1deg); }
 }
 
+/* fill-mode "both" keeps delayed elements hidden until their turn,
+   enabling staggered entrances via [animation-delay:*] */
 .animate-fade-in-up {
-  animation: fade-in-up 600ms ease-out forwards;
+  animation: fade-in-up 600ms ease-out both;
 }
 
 .animate-tick {
@@ -300,4 +302,12 @@ a:hover {
 
 .animate-sway {
   animation: gentle-sway 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-tick,
+  .animate-sway {
+    animation: none;
+  }
 }

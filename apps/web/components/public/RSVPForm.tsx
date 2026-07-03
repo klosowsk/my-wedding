@@ -31,6 +31,8 @@ interface Guest {
 interface RSVPFormProps {
   guest: Guest;
   locale: string;
+  deadlineDate?: string;
+  giftsEnabled?: boolean;
   className?: string;
 }
 
@@ -40,11 +42,17 @@ const AGE_GROUP_COLORS: Record<string, string> = {
   infant: "bg-primary-faint text-primary-light border border-primary-light/20",
 };
 
-export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProps) {
+export default function RSVPForm({
+  guest,
+  locale,
+  deadlineDate,
+  giftsEnabled = true,
+  className = "",
+}: RSVPFormProps) {
   const t = useTranslations("rsvp");
   const tCommon = useTranslations("common");
   const [submitState, setSubmitState] = useState<
-    "idle" | "loading" | "success" | "error"
+    "idle" | "loading" | "success" | "error" | "closed"
   >("idle");
 
   const {
@@ -76,6 +84,11 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+
+      if (res.status === 403) {
+        setSubmitState("closed");
+        return;
+      }
 
       if (!res.ok) {
         throw new Error("RSVP submission failed");
@@ -114,7 +127,7 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
         <p className="font-body text-body text-base md:text-lg mb-8">
           {allDeclined ? t("declinedMessage") : t("confirmedMessage")}
         </p>
-        {!allDeclined && (
+        {!allDeclined && giftsEnabled && (
           <a
             href={`/${locale}/gifts`}
             className="inline-flex items-center justify-center gap-2 bg-primary text-text-on-primary px-6 py-3 rounded-full font-body font-semibold hover:bg-primary-hover transition-colors duration-200"
@@ -160,6 +173,13 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
       <p className="font-body text-body/90 text-center text-base mb-5">
         {t("greeting", { name: guest.familyName })}
       </p>
+
+      {/* RSVP deadline */}
+      {deadlineDate && (
+        <p className="font-body text-muted text-center text-sm mb-5 -mt-3">
+          {t("deadline", { date: deadlineDate })}
+        </p>
+      )}
 
       {/* Divider */}
       <div className="w-16 h-px bg-secondary mx-auto mb-5" />
@@ -285,7 +305,7 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
                 {/* Validation error */}
                 {errors.members?.[index]?.status && (
                   <p className="font-body text-error text-xs mt-1">
-                    {errors.members[index].status?.message}
+                    {t("statusRequired")}
                   </p>
                 )}
               </div>
@@ -310,7 +330,7 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
           />
           {errors.message && (
             <p className="font-body text-error text-xs mt-1">
-              {errors.message.message}
+              {t("messageTooLong")}
             </p>
           )}
         </div>
@@ -319,6 +339,11 @@ export default function RSVPForm({ guest, locale, className = "" }: RSVPFormProp
         {submitState === "error" && (
           <ErrorAlert className="text-center">
             {tCommon("error")}
+          </ErrorAlert>
+        )}
+        {submitState === "closed" && (
+          <ErrorAlert className="text-center">
+            {t("closed")}
           </ErrorAlert>
         )}
 

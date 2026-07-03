@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { locales, type Locale } from "@/lib/i18n/routing";
+import { formatEventDate } from "@/lib/dates";
 
 export default function Footer({
   className = "",
@@ -44,7 +45,7 @@ export default function Footer({
         src="/assets/vectors/leaves-bottom-right.svg"
         alt=""
         aria-hidden="true"
-        className="hidden md:block absolute -bottom-8 -right-8 w-28 opacity-8 pointer-events-none select-none"
+        className="hidden md:block absolute -bottom-8 -right-8 w-28 opacity-10 pointer-events-none select-none"
       />
 
       <div className="mx-auto max-w-[1280px] px-6 md:px-12">
@@ -55,7 +56,7 @@ export default function Footer({
 
         {/* Date & Venue */}
         <p className="font-body text-muted text-sm text-center mb-6">
-          {eventDate.split("-").reverse().join(".")} &middot; {venueName}
+          {formatEventDate(eventDate, currentLocale, "short")} &middot; {venueName}
         </p>
 
         {/* Nav links */}

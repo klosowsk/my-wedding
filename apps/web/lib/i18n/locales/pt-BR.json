@@ -1,18 +1,13 @@
 {
   "nav": {
     "home": "Início",
-    "countdown": "Contagem",
-    "venue": "Mapa",
     "gifts": "Lista de presentes",
     "gallery": "Galeria",
-    "info": "Informações",
-    "contact": "Contato",
-    "rsvp": "Confirmar Presença"
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu"
   },
   "hero": {
     "subtitle": "convidam você para celebrar, com amor, o início de sua história como um só",
-    "date": "Data do evento",
-    "venue": "Local do Evento",
     "cta": "Confirmar Presença"
   },
   "countdown": {
@@ -24,7 +19,6 @@
   },
   "venue": {
     "title": "Onde Será",
-    "address": "Endereço do evento",
     "directions": "Google Maps",
     "waze": "Waze"
   },
@@ -44,6 +38,8 @@
     "declinedMessage": "Agradecemos pelo retorno. Sentiremos sua falta neste dia especial.",
     "deadline": "Confirme até {date}",
     "closed": "O prazo para confirmação encerrou.",
+    "statusRequired": "Escolha uma opção para cada convidado.",
+    "messageTooLong": "A mensagem é muito longa (máximo de 1000 caracteres).",
     "invalidToken": "Link de convite inválido.",
     "noToken": "Use o link enviado no seu convite ou digite seu código abaixo.",
     "enterCode": "Código do convite",
@@ -61,16 +57,16 @@
     "contribute": "Presentear",
     "funded": "Presente financiado!",
     "remaining": "Faltam {amount}",
-    "anyAmount": "Qualquer valor",
-    "allCategories": "Todos",
-    "progress": "__PERCENT__% financiado",
-    "collected": "Arrecadado: {amount}",
-    "goal": "Meta: {amount}",
-    "quoteUnit": "Valor da cota"
+    "progress": "{percent}% financiado",
+    "collected": "Arrecadado",
+    "goal": "Meta",
+    "quoteUnit": "Valor da cota",
+    "empty": "Ainda estamos preparando a lista de presentes. Volte em breve!"
   },
   "gallery": {
     "title": "Galeria",
     "subtitle": "Momentos especiais que compartilhamos.",
+    "empty": "Em breve compartilharemos nossos momentos especiais aqui.",
     "lightbox": {
       "close": "Fechar",
       "previous": "Foto anterior",
@@ -88,7 +84,6 @@
     "yourName": "Seu nome",
     "transferred": "Já transferi",
     "pendingMessage": "Sua contribuição foi registrada! Obrigado pela generosidade.",
-    "processing": "Processando...",
     "qrCode": "Escaneie o QR Code ou copie o código PIX",
     "copyCode": "Copiar Código PIX",
     "copied": "Copiado!",
@@ -112,20 +107,17 @@
     "subtitle": "Ficou com alguma dúvida? Entre em contato conosco."
   },
   "footer": {
-    "madeWith": "Feito com amor",
-    "by": "por nós"
+    "madeWith": "Feito com amor"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "message": "A página que você procura não existe ou foi movida. Que tal voltar ao início?",
+    "backHome": "Voltar ao Início"
   },
   "common": {
     "loading": "Carregando...",
     "error": "Algo deu errado. Tente novamente?",
-    "save": "Salvar",
-    "cancel": "Cancelar",
-    "delete": "Excluir",
-    "edit": "Editar",
-    "add": "Adicionar",
     "close": "Fechar",
-    "back": "Voltar",
-    "confirm": "Confirmar",
-    "search": "Buscar"
+    "back": "Voltar"
   }
 }

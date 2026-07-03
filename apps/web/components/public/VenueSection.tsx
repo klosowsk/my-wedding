@@ -29,7 +29,8 @@ export default function VenueSection({
     <div className={className}>
       <div className="mx-auto max-w-[1024px] px-6 md:px-12 text-center">
         {/* Section heading */}
-        <SectionTitle className="mb-3">{title}</SectionTitle>
+        <SectionTitle className="mb-4">{title}</SectionTitle>
+        <div className="w-16 h-px bg-secondary mx-auto mb-5" />
 
         {/* Venue name */}
         <p className="font-body font-semibold text-heading text-base md:text-lg mb-1">
@@ -52,13 +53,13 @@ export default function VenueSection({
         )}
 
         {/* Directions links — Google Maps + Waze */}
-        <div className="flex items-center justify-center gap-5 flex-wrap">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
           {googleMapsUrl && (
             <a
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-body font-semibold text-sm text-primary hover:text-primary-hover transition-colors duration-200"
+              className="inline-flex items-center gap-2 rounded-full border border-secondary bg-warm-white px-5 py-3 font-body font-semibold text-sm text-primary hover:bg-surface hover:border-secondary-dark transition-all duration-200"
             >
               {/* Map pin icon */}
               <svg
@@ -90,7 +91,7 @@ export default function VenueSection({
               href={wazeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-body font-semibold text-sm text-primary hover:text-primary-hover transition-colors duration-200"
+              className="inline-flex items-center gap-2 rounded-full border border-secondary bg-warm-white px-5 py-3 font-body font-semibold text-sm text-primary hover:bg-surface hover:border-secondary-dark transition-all duration-200"
             >
               {/* Navigation/route icon */}
               <svg

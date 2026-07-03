@@ -51,34 +51,34 @@ export default function Hero({
       />
 
 
-      {/* Content with corner frame */}
+      {/* Content with corner frame — staged entrance, like opening the invite */}
       <div className="corner-frame relative z-10 text-center px-8 py-12 md:px-14 md:py-16 max-w-2xl mx-auto">
         {/* Subtitle above names — italic, like the invite */}
-        <p className="font-body italic text-muted text-base md:text-lg mb-5 leading-relaxed max-w-md mx-auto">
+        <p className="animate-fade-in-up font-body italic text-muted text-base md:text-lg mb-5 leading-relaxed max-w-md mx-auto">
           {subtitle}
         </p>
 
         {/* Couple names */}
-        <h1 className="font-script font-normal text-script text-5xl md:text-7xl lg:text-8xl tracking-wide leading-none mb-6">
-          {first} & {second}
+        <h1 className="animate-fade-in-up [animation-delay:150ms] font-script font-normal text-script text-5xl md:text-7xl lg:text-8xl tracking-wide leading-none mb-6">
+          {first} <span className="text-primary">&</span> {second}
         </h1>
 
         {/* Divider ornament */}
-        <Divider className="mb-6" />
+        <Divider className="animate-fade-in-up [animation-delay:300ms] mb-6" />
 
         {/* Date */}
-        <p className="font-body font-semibold text-heading text-lg md:text-xl mb-1 tracking-wide">
+        <p className="animate-fade-in-up [animation-delay:450ms] font-body font-semibold text-heading text-lg md:text-xl mb-1 tracking-wide">
           {date}
         </p>
 
         {/* Venue */}
-        <p className="font-body text-muted text-sm md:text-base mb-8">
+        <p className="animate-fade-in-up [animation-delay:450ms] font-body text-muted text-sm md:text-base mb-8">
           {venue}
         </p>
 
         {/* CTA */}
         {(cta && rsvpHref) || secondaryCtas.length > 0 ? (
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="animate-fade-in-up [animation-delay:600ms] flex flex-wrap items-center justify-center gap-3">
             {cta && rsvpHref && (
               <a href={rsvpHref}>
                 <Button variant="primary" size="lg">

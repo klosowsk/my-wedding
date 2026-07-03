@@ -1,18 +1,13 @@
 {
   "nav": {
     "home": "Home",
-    "countdown": "Countdown",
-    "venue": "Map",
     "gifts": "Gifts",
     "gallery": "Gallery",
-    "info": "Info",
-    "contact": "Contact",
-    "rsvp": "RSVP"
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "hero": {
     "subtitle": "invite you to celebrate, with love, the beginning of their story as one",
-    "date": "Event date",
-    "venue": "Wedding Venue",
     "cta": "RSVP"
   },
   "countdown": {
@@ -24,7 +19,6 @@
   },
   "venue": {
     "title": "Venue",
-    "address": "Event address",
     "directions": "Google Maps",
     "waze": "Waze"
   },
@@ -44,6 +38,8 @@
     "declinedMessage": "Thank you for letting us know. We will miss you on this special day.",
     "deadline": "Please confirm by {date}",
     "closed": "The RSVP deadline has passed.",
+    "statusRequired": "Please choose an option for each guest.",
+    "messageTooLong": "The message is too long (1,000 characters max).",
     "invalidToken": "Invalid invitation link.",
     "noToken": "Use the link from your invitation or enter your code below.",
     "enterCode": "Invitation code",
@@ -61,16 +57,16 @@
     "contribute": "Gift",
     "funded": "Fully funded!",
     "remaining": "{amount} remaining",
-    "anyAmount": "Any amount",
-    "allCategories": "All",
-    "progress": "__PERCENT__% funded",
-    "collected": "Collected: {amount}",
-    "goal": "Goal: {amount}",
-    "quoteUnit": "Quote value"
+    "progress": "{percent}% funded",
+    "collected": "Collected",
+    "goal": "Goal",
+    "quoteUnit": "Quote value",
+    "empty": "We're still preparing our gift registry. Check back soon!"
   },
   "gallery": {
     "title": "Gallery",
     "subtitle": "Special moments we share.",
+    "empty": "We'll share our special moments here soon.",
     "lightbox": {
       "close": "Close",
       "previous": "Previous photo",
@@ -88,7 +84,6 @@
     "yourName": "Your name",
     "transferred": "I already transferred",
     "pendingMessage": "Your contribution has been recorded! Thank you for your generosity.",
-    "processing": "Processing...",
     "qrCode": "Scan the QR Code or copy the PIX code",
     "copyCode": "Copy PIX Code",
     "copied": "Copied!",
@@ -112,20 +107,17 @@
     "subtitle": "Have any questions? Get in touch with us."
   },
   "footer": {
-    "madeWith": "Made with love",
-    "by": "by us"
+    "madeWith": "Made with love"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist or has been moved. How about heading back home?",
+    "backHome": "Back to Home"
   },
   "common": {
     "loading": "Loading...",
     "error": "Something went wrong. Try again?",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "add": "Add",
     "close": "Close",
-    "back": "Back",
-    "confirm": "Confirm",
-    "search": "Search"
+    "back": "Back"
   }
 }

@@ -36,7 +36,7 @@ function CountdownBox({
   animating: boolean;
 }) {
   return (
-    <div className="bg-warm-white border border-secondary rounded-xl p-3 md:p-5 flex flex-col items-center justify-center min-w-[68px] md:min-w-[90px]">
+    <div className="bg-warm-white border border-secondary rounded-xl p-3 md:p-5 flex flex-col items-center justify-center min-w-[68px] md:min-w-[90px] shadow-[0_2px_8px_rgba(60,53,48,0.05)]">
       <span
         className={[
           "font-body font-bold text-3xl md:text-4xl text-heading leading-none tabular-nums",

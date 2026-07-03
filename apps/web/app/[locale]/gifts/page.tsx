@@ -6,6 +6,7 @@ import { giftService } from "@/src/services/gift";
 import { siteConfigService } from "@/src/services/site-config";
 import PublicLayout from "@/components/public/PublicLayout";
 import GiftsWithPayment from "@/components/public/GiftsWithPayment";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export async function generateMetadata({
   params,
@@ -41,48 +42,6 @@ export default async function GiftsPage({
     notFound();
   }
 
-  const fallbackLabelsByLocale: Record<
-    string,
-    { collected: string; goal: string; quoteUnit: string }
-  > = {
-    "pt-BR": {
-      collected: "Arrecadado: {amount}",
-      goal: "Meta: {amount}",
-      quoteUnit: "Valor da cota",
-    },
-    en: {
-      collected: "Collected: {amount}",
-      goal: "Goal: {amount}",
-      quoteUnit: "Quote value",
-    },
-    es: {
-      collected: "Recaudado: {amount}",
-      goal: "Meta: {amount}",
-      quoteUnit: "Valor de cuota",
-    },
-  };
-
-  const localeFallback =
-    fallbackLabelsByLocale[locale] ?? fallbackLabelsByLocale["pt-BR"]!;
-
-  const rawCollectedLabel = t("collected", { amount: "{amount}" });
-  const rawGoalLabel = t("goal", { amount: "{amount}" });
-  const rawQuoteUnitLabel = t("quoteUnit");
-
-  const collectedLabel =
-    rawCollectedLabel === "collected" || rawCollectedLabel === "gifts.collected"
-      ? localeFallback.collected
-      : rawCollectedLabel;
-  const goalLabel =
-    rawGoalLabel === "goal" || rawGoalLabel === "gifts.goal"
-      ? localeFallback.goal
-      : rawGoalLabel;
-  const quoteUnitLabel =
-    rawQuoteUnitLabel === "quoteUnit" ||
-    rawQuoteUnitLabel === "gifts.quoteUnit"
-      ? localeFallback.quoteUnit
-      : rawQuoteUnitLabel;
-
   return (
     <PublicLayout>
 
@@ -100,17 +59,15 @@ export default async function GiftsPage({
           </div>
 
           {/* Gift Grid with Payment Modal */}
-          <GiftsWithPayment
-            gifts={gifts}
-            contributeLabel={t("contribute")}
-            fundedLabel={t("funded")}
-            progressLabel={t("progress")}
-            collectedLabel={collectedLabel}
-            goalLabel={goalLabel}
-            quoteUnitLabel={quoteUnitLabel}
-            locale={locale}
-            currency={wedding.currency}
-          />
+          {gifts.length === 0 ? (
+            <EmptyState message={t("empty")} className="max-w-[500px] mx-auto" />
+          ) : (
+            <GiftsWithPayment
+              gifts={gifts}
+              locale={locale}
+              currency={wedding.currency}
+            />
+          )}
         </div>
       </section>
 

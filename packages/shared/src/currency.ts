@@ -26,6 +26,19 @@ export function formatCurrency(cents: number, options?: CurrencyOptions): string
 }
 
 /**
+ * Format an integer amount (in smallest currency unit) as a localized
+ * plain decimal without the currency symbol, e.g. 123456 -> "1.234,56" (pt-BR).
+ */
+export function formatCurrencyAmount(cents: number, options?: CurrencyOptions): string {
+  const { locale } = resolveCurrencyOptions(options);
+
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(cents / 100);
+}
+
+/**
  * Get the currency symbol (e.g. "R$", "$", "€").
  */
 export function getCurrencySymbol(options?: CurrencyOptions): string {

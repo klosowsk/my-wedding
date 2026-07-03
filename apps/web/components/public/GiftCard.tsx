@@ -1,15 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency } from "@marriage/shared";
-
-function metricLabel(template: string, fallback: string): string {
-  const clean = template
-    .replace("{amount}", "")
-    .replace(/[:：]/g, "")
-    .trim();
-  return clean || fallback;
-}
 
 interface Gift {
   id: string;
@@ -29,12 +22,6 @@ interface Gift {
 
 interface GiftCardProps {
   gift: Gift;
-  contributeLabel: string;
-  fundedLabel: string;
-  progressLabel: string;
-  collectedLabel: string;
-  goalLabel: string;
-  quoteUnitLabel: string;
   currency?: {
     code: string;
     locale: string;
@@ -45,26 +32,21 @@ interface GiftCardProps {
 
 export default function GiftCard({
   gift,
-  contributeLabel,
-  fundedLabel,
-  progressLabel,
-  collectedLabel,
-  goalLabel,
-  quoteUnitLabel,
   currency,
   onContribute,
   className = "",
 }: GiftCardProps) {
+  const t = useTranslations("gifts");
+
   const percent = Math.min(
     Math.round((gift.collectedCents / gift.priceCents) * 100),
     100
   );
+  const remainingCents = Math.max(gift.priceCents - gift.collectedCents, 0);
   const isFullyFunded = gift.status === "fully_funded" || percent >= 100;
   const showProgress = gift.showCollectedAmount && gift.showGoalAmount;
   const showFundedBadge = isFullyFunded && gift.showFundedBadge;
   const isQuotesMode = gift.contributionMode === "quotes" && !!gift.quoteUnitCents;
-  const collectedTitle = metricLabel(collectedLabel, "Collected");
-  const goalTitle = metricLabel(goalLabel, "Goal");
 
   return (
     <div
@@ -108,7 +90,7 @@ export default function GiftCard({
         {/* Fully funded badge */}
         {showFundedBadge && (
           <div className="absolute top-3 right-3 bg-accent text-text-on-primary font-body font-semibold text-xs px-3 py-1 rounded-full">
-            {fundedLabel}
+            {t("funded")}
           </div>
         )}
       </div>
@@ -130,7 +112,7 @@ export default function GiftCard({
         {isQuotesMode && (
           <div className="mb-3 rounded-lg border border-secondary/70 bg-surface/70 px-3 py-2">
             <p className="text-[11px] uppercase tracking-wide text-muted font-semibold">
-              {quoteUnitLabel}
+              {t("quoteUnit")}
             </p>
             <p className="text-sm font-bold text-heading mt-0.5">
               {formatCurrency(gift.quoteUnitCents ?? 0, currency)}
@@ -150,7 +132,7 @@ export default function GiftCard({
             {gift.showCollectedAmount && (
               <div className="rounded-lg border border-secondary/70 bg-surface/70 px-3 py-2">
                 <p className="text-[11px] uppercase tracking-wide text-muted font-semibold">
-                  {collectedTitle}
+                  {t("collected")}
                 </p>
                 <p className="text-sm font-bold text-heading mt-0.5">
                   {formatCurrency(gift.collectedCents, currency)}
@@ -160,7 +142,7 @@ export default function GiftCard({
             {gift.showGoalAmount && (
               <div className="rounded-lg border border-secondary/70 bg-surface/70 px-3 py-2">
                 <p className="text-[11px] uppercase tracking-wide text-muted font-semibold">
-                  {goalTitle}
+                  {t("goal")}
                 </p>
                 <p className="text-sm font-bold text-heading mt-0.5">
                   {formatCurrency(gift.priceCents, currency)}
@@ -185,19 +167,22 @@ export default function GiftCard({
             </div>
 
             <p className="font-body text-muted text-xs mb-4">
-              {progressLabel.replace("__PERCENT__", String(percent))}
+              {t("progress", { percent })}
+              {!isFullyFunded && remainingCents > 0 && (
+                <> · {t("remaining", { amount: formatCurrency(remainingCents, currency) })}</>
+              )}
             </p>
           </>
         )}
 
         {/* Contribute button */}
         <Button
-          variant="secondary"
+          variant="primary"
           size="sm"
           className="w-full"
           onClick={() => onContribute?.(gift.id)}
         >
-          {contributeLabel}
+          {t("contribute")}
         </Button>
       </div>
     </div>
