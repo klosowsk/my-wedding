@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createContributionSchema } from "@marriage/shared/validators";
 import { paymentService } from "@/src/services/payment";
+import { locales, routing } from "@/lib/i18n/routing";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,9 +17,20 @@ export async function POST(request: NextRequest) {
 
     const { giftId, amountCents, quoteQuantity, contributorName } = parsed.data;
 
-    const origin = request.nextUrl.origin;
-    const successUrl = `${origin}/gifts?payment=success`;
-    const cancelUrl = `${origin}/gifts?payment=cancelled`;
+    // Build return URLs from the canonical public URL, not the request host.
+    // Behind a proxy/tunnel (prod: Cloudflare -> julianaerodrigo.com) or when
+    // hit via localhost, request.nextUrl.origin is the wrong host for the guest.
+    const origin = (
+      process.env.NEXT_PUBLIC_APP_URL ?? request.nextUrl.origin
+    ).replace(/\/$/, "");
+    // Locale comes from the client (schema ignores it); validate against the
+    // allowlist so the guest returns to their own localized gifts page.
+    const rawLocale = typeof body?.locale === "string" ? body.locale : "";
+    const locale = (locales as readonly string[]).includes(rawLocale)
+      ? rawLocale
+      : routing.defaultLocale;
+    const successUrl = `${origin}/${locale}/gifts?payment=success&gift=${giftId}`;
+    const cancelUrl = `${origin}/${locale}/gifts?payment=cancelled&gift=${giftId}`;
 
     const result = await paymentService.createStripeSession(
       giftId,

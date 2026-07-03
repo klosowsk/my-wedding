@@ -19,7 +19,6 @@ export async function createCheckoutSession(params: {
   if (!stripe) return null;
 
   return stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
     mode: "payment",
     line_items: [
       {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GiftGrid from "./GiftGrid";
 import PaymentModal from "./PaymentModal";
+import PaymentResultModal, { type PaymentResult } from "./PaymentResultModal";
 
 interface Gift {
   id: string;
@@ -47,6 +48,29 @@ export default function GiftsWithPayment({
   currency,
 }: GiftsWithPaymentProps) {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+  const [paymentResult, setPaymentResult] = useState<PaymentResult | null>(null);
+  const [resultGiftId, setResultGiftId] = useState<string | null>(null);
+
+  // After returning from Stripe Checkout the guest lands on
+  // /gifts?payment=success|cancelled&gift=<id>. Read it once, then strip the
+  // query so a refresh or back-navigation doesn't re-trigger the modal.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const payment = params.get("payment");
+    if (payment === "success" || payment === "cancelled" || payment === "error") {
+      setPaymentResult(payment);
+      setResultGiftId(params.get("gift"));
+
+      params.delete("payment");
+      params.delete("gift");
+      const qs = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + (qs ? `?${qs}` : "")
+      );
+    }
+  }, []);
 
   const handleContribute = (giftId: string) => {
     const gift = gifts.find((g) => g.id === giftId);
@@ -58,6 +82,24 @@ export default function GiftsWithPayment({
   const handleClose = () => {
     setSelectedGift(null);
   };
+
+  const resultGift = resultGiftId
+    ? gifts.find((g) => g.id === resultGiftId) ?? null
+    : null;
+
+  const handleResultClose = () => {
+    setPaymentResult(null);
+    setResultGiftId(null);
+  };
+
+  // Retry: close the result modal and reopen the payment modal for that gift.
+  const handleRetry = resultGift
+    ? () => {
+        setPaymentResult(null);
+        setResultGiftId(null);
+        setSelectedGift(resultGift);
+      }
+    : undefined;
 
   return (
     <>
@@ -82,6 +124,13 @@ export default function GiftsWithPayment({
           currency={currency}
         />
       )}
+
+      <PaymentResultModal
+        result={paymentResult}
+        giftName={resultGift?.name}
+        onClose={handleResultClose}
+        onRetry={handleRetry}
+      />
     </>
   );
 }

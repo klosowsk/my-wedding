@@ -95,7 +95,14 @@
     "quoteHint": "Choose how many quotes you want to gift",
     "quoteUnit": "Quote",
     "quoteQuantity": "Quantity",
-    "quoteTotal": "Total"
+    "quoteTotal": "Total",
+    "successTitle": "Thank you so much! 💛",
+    "successMessage": "Your gift was received with all our love. We're so happy to have you with us on this journey.",
+    "cancelledTitle": "Payment not completed",
+    "cancelledMessage": "You left before finishing. No worries — just try again whenever you like.",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "We couldn't process your gift right now. Want to try again?",
+    "tryAgain": "Try again"
   },
   "info": {
     "title": "Information"

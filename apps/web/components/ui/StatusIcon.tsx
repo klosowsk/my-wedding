@@ -1,4 +1,4 @@
-type StatusIconVariant = "success" | "error";
+type StatusIconVariant = "success" | "error" | "warning";
 
 interface StatusIconProps {
   variant: StatusIconVariant;
@@ -8,6 +8,7 @@ interface StatusIconProps {
 const variantStyles: Record<StatusIconVariant, { bg: string; icon: string }> = {
   success: { bg: "bg-accent-faint", icon: "text-accent" },
   error: { bg: "bg-error-bg", icon: "text-error" },
+  warning: { bg: "bg-primary-faint", icon: "text-primary" },
 };
 
 const icons: Record<StatusIconVariant, React.ReactNode> = {
@@ -19,6 +20,13 @@ const icons: Record<StatusIconVariant, React.ReactNode> = {
   error: (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  ),
+  warning: (
+    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" strokeWidth={2} />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 16h.01" />
     </svg>
   ),
 };

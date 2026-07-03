@@ -95,7 +95,14 @@
     "quoteHint": "Elige cuántas cuotas quieres regalar",
     "quoteUnit": "Cuota",
     "quoteQuantity": "Cantidad",
-    "quoteTotal": "Total"
+    "quoteTotal": "Total",
+    "successTitle": "¡Muchas gracias! 💛",
+    "successMessage": "Recibimos tu regalo con todo el cariño. Estamos muy felices de tenerte con nosotros en esta historia.",
+    "cancelledTitle": "Pago no completado",
+    "cancelledMessage": "Saliste antes de finalizar. Sin problema — inténtalo de nuevo cuando quieras.",
+    "errorTitle": "Algo salió mal",
+    "errorMessage": "No pudimos procesar tu regalo ahora. ¿Quieres intentarlo de nuevo?",
+    "tryAgain": "Intentar de nuevo"
   },
   "info": {
     "title": "Información"

@@ -95,7 +95,14 @@
     "quoteHint": "Escolha quantas cotas deseja oferecer",
     "quoteUnit": "Cota",
     "quoteQuantity": "Quantidade",
-    "quoteTotal": "Total"
+    "quoteTotal": "Total",
+    "successTitle": "Muito obrigado! 💛",
+    "successMessage": "Seu presente foi recebido com todo o carinho. Ficamos imensamente felizes por ter você com a gente nessa história.",
+    "cancelledTitle": "Pagamento não concluído",
+    "cancelledMessage": "Você saiu antes de finalizar. Sem problemas — é só tentar de novo quando quiser.",
+    "errorTitle": "Algo deu errado",
+    "errorMessage": "Não conseguimos processar seu presente agora. Pode tentar novamente?",
+    "tryAgain": "Tentar novamente"
   },
   "info": {
     "title": "Informações"

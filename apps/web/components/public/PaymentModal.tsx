@@ -52,6 +52,7 @@ export default function PaymentModal({
   gift,
   open,
   onClose,
+  locale,
   currency,
 }: PaymentModalProps) {
   const t = useTranslations("payment");
@@ -218,6 +219,7 @@ export default function PaymentModal({
         quoteQuantity: isQuotesMode ? quoteQuantity : undefined,
         contributorName: contributorName || "Anonymous",
         paymentMethod: "stripe",
+        locale,
       });
 
       window.location.href = result.url;
@@ -226,7 +228,7 @@ export default function PaymentModal({
       setStep("error");
       setLoading(false);
     }
-  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName, tCommon]);
+  }, [gift.id, amountCents, quoteQuantity, isQuotesMode, contributorName, locale, tCommon]);
 
   const generateTxId = () => {
     return `PIX${gift.id.replace(/-/g, "").substring(0, 8)}${Date.now().toString(36)}`.substring(0, 25);
