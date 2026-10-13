@@ -114,6 +114,8 @@ const langTabs = [
   { id: "es", label: "ES" },
 ];
 
+const emptyManualPix = { contributorName: "", amount: "", paidAt: "" };
+
 function parseFixedOptionsInput(value: string): number[] {
   return value
     .split(",")
@@ -166,6 +168,7 @@ export default function AdminGiftsPage() {
   const [contributionsModalGift, setContributionsModalGift] = useState<Gift | null>(null);
   const [contributionActionTarget, setContributionActionTarget] = useState<string | null>(null);
   const [draggedGiftId, setDraggedGiftId] = useState<string | null>(null);
+  const [manualPix, setManualPix] = useState(emptyManualPix);
 
   const { data: gifts, isLoading, error } = useQuery<Gift[]>({
     queryKey: ["admin", "gifts"],
@@ -296,6 +299,51 @@ export default function AdminGiftsPage() {
     },
   });
 
+  const manualPixMutation = useMutation({
+    mutationFn: ({
+      giftId,
+      body,
+    }: {
+      giftId: string;
+      body: { contributorName: string; amountCents: number; paidAt?: string };
+    }) => apiPost(`/api/v1/admin/gifts/${giftId}/contributions`, body),
+    onSuccess: (_result, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "gifts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "gifts", variables.giftId, "contributions"],
+      });
+      setManualPix(emptyManualPix);
+      toast({ message: "PIX recorded", type: "success" });
+    },
+    onError: (err: Error) => {
+      toast({
+        message: err.message || "Failed to record PIX",
+        type: "error",
+      });
+    },
+  });
+
+  function handleManualPixSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!contributionsGiftId) return;
+    const amountCents = Math.round(parseFloat(manualPix.amount || "0") * 100);
+    if (!manualPix.contributorName.trim() || amountCents < 1) {
+      toast({ message: "Enter the guest name and amount", type: "error" });
+      return;
+    }
+    manualPixMutation.mutate({
+      giftId: contributionsGiftId,
+      body: {
+        contributorName: manualPix.contributorName.trim(),
+        amountCents,
+        // Noon local time so the date doesn't shift a day across timezones
+        paidAt: manualPix.paidAt
+          ? new Date(`${manualPix.paidAt}T12:00:00`).toISOString()
+          : undefined,
+      },
+    });
+  }
+
   function openCreate() {
     setEditingGift(null);
     setForm(emptyForm);
@@ -337,6 +385,7 @@ export default function AdminGiftsPage() {
   function closeContributionsModal() {
     setContributionsModalGift(null);
     setContributionActionTarget(null);
+    setManualPix(emptyManualPix);
   }
 
   function updateField(field: keyof GiftFormState, value: string) {
@@ -792,6 +841,55 @@ export default function AdminGiftsPage() {
         size="lg"
       >
         <div className="space-y-3">
+          <form
+            onSubmit={handleManualPixSubmit}
+            className="rounded-lg border border-secondary bg-surface p-3 space-y-3"
+          >
+            <div>
+              <h3 className="text-sm font-semibold text-heading">Record PIX manually</h3>
+              <p className="text-xs text-muted mt-0.5">
+                For a PIX you found in the bank statement that isn&apos;t listed below.
+                It is saved as confirmed.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <Input
+                label="Guest name"
+                required
+                value={manualPix.contributorName}
+                onChange={(e) =>
+                  setManualPix((prev) => ({ ...prev, contributorName: e.target.value }))
+                }
+                placeholder="e.g., Tia Maria"
+              />
+              <Input
+                label={`Amount (${getCurrencySymbol()})`}
+                type="number"
+                required
+                min="0.01"
+                step="0.01"
+                value={manualPix.amount}
+                onChange={(e) =>
+                  setManualPix((prev) => ({ ...prev, amount: e.target.value }))
+                }
+                placeholder="0.00"
+              />
+              <Input
+                label="Paid on"
+                type="date"
+                value={manualPix.paidAt}
+                onChange={(e) =>
+                  setManualPix((prev) => ({ ...prev, paidAt: e.target.value }))
+                }
+              />
+            </div>
+            <div className="flex justify-end">
+              <Button type="submit" size="sm" loading={manualPixMutation.isPending}>
+                Add PIX
+              </Button>
+            </div>
+          </form>
+
           <div className="flex items-center justify-between gap-2">
             <h3 className="text-sm font-semibold text-heading">PIX confirmations</h3>
             <Badge variant="default">{sortedContributions.length} total</Badge>

@@ -13,6 +13,14 @@ const confirmContributionSchema = z.object({
   action: z.enum(["confirm", "reject"]),
 });
 
+// Admin records a PIX received outside the site flow (guest paid but never
+// clicked "Já transferi"). Already confirmed, so it counts toward the total.
+const manualContributionSchema = z.object({
+  contributorName: z.string().trim().min(1).max(200),
+  amountCents: z.number().int().min(1),
+  paidAt: z.coerce.date().optional(),
+});
+
 function toNullableUuid(value: string): string | null {
   return z.string().uuid().safeParse(value).success ? value : null;
 }
@@ -108,6 +116,68 @@ export async function PATCH(
     }
 
     return NextResponse.json(contribution);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Internal server error";
+    const status =
+      message === "Unauthorized"
+        ? 401
+        : message === "Forbidden"
+          ? 403
+          : 500;
+    return NextResponse.json({ message }, { status });
+  }
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: RouteContext
+) {
+  try {
+    const session = await requireAdmin();
+
+    const { id: giftId } = await params;
+    const body = await request.json();
+
+    const parsed = manualContributionSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { message: "Invalid request body", errors: parsed.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const gift = await giftRepository.findById(giftId);
+    if (!gift) {
+      return NextResponse.json(
+        { message: "Gift not found" },
+        { status: 404 }
+      );
+    }
+
+    const { contributorName, amountCents, paidAt } = parsed.data;
+    const now = new Date();
+
+    const contribution = await giftContributionRepository.create({
+      giftId,
+      contributorName,
+      amountCents,
+      paymentMethod: "pix",
+      paymentStatus: "confirmed",
+      confirmedBy: toNullableUuid(session.user.id),
+      confirmedAt: now,
+      createdAt: paidAt ?? now,
+    });
+
+    const allContributions =
+      await giftContributionRepository.findByGiftId(giftId);
+    const totalCollected = allContributions
+      .filter((c) => c.paymentStatus === "confirmed")
+      .reduce((sum, c) => sum + c.amountCents, 0);
+
+    await giftRepository.updateCollected(giftId, totalCollected);
+
+    return NextResponse.json(contribution, { status: 201 });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Internal server error";
